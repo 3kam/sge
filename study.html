@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSC Master Plan: Scenarios & Timetable</title>
+<style>
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f8fafc;
+    --color-border-primary: #94a3b8;
+    --color-border-secondary: #cbd5e1;
+    --color-border-tertiary: #e2e8f0;
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #475569;
+    --border-radius-md: 6px;
+    --border-radius-lg: 10px;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f1f5f9; display: flex; justify-content: center; padding: 1rem; }
+  .wrap { padding: 1.5rem; font-family: var(--font-sans); max-width: 800px; width: 100%; background: #ffffff; border-radius: var(--border-radius-lg); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+  
+  h2.section-title { font-size: 18px; color: var(--color-text-primary); margin-bottom: 12px; margin-top: 10px; border-bottom: 2px solid var(--color-border-tertiary); padding-bottom: 6px;}
+
+  /* TABS */
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab { padding: 7px 18px; border-radius: var(--border-radius-md); border: 1px solid var(--color-border-secondary); font-size: 13px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); font-weight: 400; transition: all 0.2s;}
+  .tab.active { font-weight: 600; border-color: var(--color-border-primary); background: var(--color-background-secondary); color: var(--color-text-primary); }
+  
+  /* ATAR TABS */
+  .atar-tab.t0.active { background: #FEF3F2; color: #B42318; border-color: #FECDCA; }
+  .atar-tab.t1.active { background: #F0F9FF; color: #026AA2; border-color: #B9E6FE; }
+  .atar-tab.t2.active { background: #F0FDF4; color: #166534; border-color: #BBF7D0; }
+
+  /* ATAR SCENARIOS CSS */
+  .scenario-header { padding: 14px 18px; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; margin-bottom: 0; }
+  .s0 .scenario-header { background: #FEF3F2; border: 1px solid #FECDCA; }
+  .s1 .scenario-header { background: #F0F9FF; border: 1px solid #B9E6FE; }
+  .s2 .scenario-header { background: #F0FDF4; border: 1px solid #BBF7D0; }
+  .scenario-title { font-size: 16px; font-weight: 600; }
+  .s0 .scenario-title { color: #B42318; }
+  .s1 .scenario-title { color: #026AA2; }
+  .s2 .scenario-title { color: #166534; }
+  .scenario-subtitle { font-size: 12px; margin-top: 3px; color: var(--color-text-secondary); }
+  .scenario-body { border: 1px solid var(--color-border-tertiary); border-top: none; border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); overflow: hidden; margin-bottom: 2rem;}
+  .atar-banner { padding: 16px 18px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .atar-num { font-size: 36px; font-weight: 700; color: var(--color-text-primary); }
+  .atar-label { font-size: 12px; color: var(--color-text-secondary); }
+  .atar-agg { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+  .subject-table { width: 100%; border-collapse: collapse; }
+  .subject-table th { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .04em; padding: 8px 18px; text-align: left; background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); }
+  .subject-table td { font-size: 13px; padding: 9px 18px; border-bottom: 1px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+  .subject-table tr:last-child td { border-bottom: none; }
+  .subject-table tr.dropped td { color: var(--color-text-secondary); text-decoration: line-through; opacity: 0.6; }
+  .band { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; display: inline-block; }
+  .b6 { background: #DCFCE7; color: #166534; }
+  .b5 { background: #DBEAFE; color: #1E40AF; }
+  .b4 { background: #FEF9C3; color: #854D0E; }
+  .b3 { background: #FEE2E2; color: #991B1B; }
+  .b2 { background: #F3F4F6; color: #6B7280; }
+  .note { font-size: 12px; color: var(--color-text-secondary); padding: 12px 18px; border-top: 1px solid var(--color-border-tertiary); line-height: 1.6; }
+  .what-it-takes { padding: 12px 18px; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .wit-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .wit-item { font-size: 12px; color: var(--color-text-primary); margin-bottom: 4px; padding-left: 12px; position: relative; }
+  .wit-item::before { content: "→"; position: absolute; left: 0; color: var(--color-text-secondary); }
+  .lever-note { margin-top: -10px; margin-bottom: 2rem; padding: 12px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; border: 1px solid var(--color-border-tertiary); }
+
+  /* TIMETABLE CSS */
+  .day { background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 10px; overflow: hidden; }
+  .day-hd { padding: 9px 14px; background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 3px; }
+  .day-name { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
+  .day-sub { font-size: 11px; color: var(--color-text-secondary); }
+  .row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .row:last-child { border-bottom: none; }
+  .t { font-size: 11px; color: var(--color-text-secondary); min-width: 100px; padding-top: 2px; line-height: 1.4; }
+  .pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; min-width: 78px; text-align: center; flex-shrink: 0; }
+  
+  .ps { background: #e6f1fb; color: #0c447c; }
+  .pp { background: #faece7; color: #8b3520; }
+  .pm { background: #eaf3de; color: #235209; }
+  .pe { background: #fbeaf0; color: #6b2039; }
+  .psw { background: #eeedfe; color: #352f85; }
+  .pent { background: #e1f5ee; color: #074d3e; }
+  .peng { background: #faeeda; color: #5c3506; }
+  .pb { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .ptr { background: #fcf0f0; color: #922b2b; }
+  .pfr { background: #d6f0e2; color: #0a4d2b; }
+  .psl { background: #ede9fe; color: #4c1d95; }
+  
+  .lbl { font-size: 12px; color: var(--color-text-primary); line-height: 1.4; }
+  .row-note { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .tip { border-left: 3px solid #16a34a; padding: 9px 13px; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 1.2rem; line-height: 1.6; background: #f0fdf4;}
+  .legend { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 1.1rem; }
+  .sec { font-size: 10px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; margin-top: 1rem;}
+  
+  .freq-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); margin-bottom: 1.2rem; border: 1px solid var(--color-border-tertiary);}
+  .freq-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-text-secondary); }
+  .freq-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  
+  .divider { padding: 6px 14px; background: #F9F7F2; border-bottom: 1px solid var(--color-border-tertiary); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary); }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.2rem; }
+  .summary-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; border: 1px solid var(--color-border-tertiary);}
+  .summary-title { font-size: 11px; font-weight: 700; color: var(--color-text-primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .04em; }
+  .summary-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .summary-row:last-child { margin-bottom: 0; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .summary-text { font-size: 11px; color: var(--color-text-secondary); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <h2 class="section-title">HSC ATAR Scenarios</h2>
+  <div class="tabs">
+    <button class="tab atar-tab t0 active" onclick="showAtar(0)">😰 Dip Lower</button>
+    <button class="tab atar-tab t1" onclick="showAtar(1)">😐 Stay Same</button>
+    <button class="tab atar-tab t2" onclick="showAtar(2)">💪 Push Hard</button>
+  </div>
+
+  <div id="s0" class="scenario-card s0">
+    <div class="scenario-header">
+      <div class="scenario-title">😰 Dip Lower — You coast or struggle in remaining tasks + HSC</div>
+      <div class="scenario-subtitle">Ranks drop, HSC exam underperforms current average raw marks</div>
+    </div>
+    <div class="scenario-body">
+      <div class="atar-banner">
+        <div><div class="atar-num">~68–71</div><div class="atar-label">Predicted ATAR</div><div class="atar-agg">Aggregate ~295–310 / 500</div></div>
+        <div style="margin-left:auto;text-align:right"><div style="font-size:12px;color:var(--color-text-secondary)">This happens if you stop pushing<br>and let distraction win</div></div>
+      </div>
+      <table class="subject-table">
+        <tr><th>Subject</th><th>Assumed Raw HSC</th><th>Aligned Mark</th><th>Band</th><th>Scaled</th></tr>
+        <tr><td>English Standard</td><td>~65%</td><td>~74</td><td><span class="band b4">Band 4</span></td><td>~42</td></tr>
+        <tr><td>Maths Standard 2</td><td>~80%</td><td>~84</td><td><span class="band b5">Band 5</span></td><td>~72</td></tr>
+        <tr><td>Physics</td><td>~30%</td><td>~58</td><td><span class="band b3">Band 3</span></td><td>~50</td></tr>
+        <tr><td>Enterprise Computing</td><td>~65%</td><td>~76</td><td><span class="band b4">Band 4</span></td><td>~61</td></tr>
+        <tr><td>Software Engineering</td><td>~45%</td><td>~70</td><td><span class="band b4">Band 4</span></td><td>~57</td></tr>
+        <tr class="dropped"><td>Engineering Studies</td><td>~35%</td><td>~62</td><td><span class="band b3">Band 3</span></td><td>~40 (dropped)</td></tr>
+      </table>
+      <div class="what-it-takes">
+        <div class="wit-title">How this happens</div>
+        <div class="wit-item">You stop doing past papers and just re-read notes</div>
+        <div class="wit-item">Phone distractions cut your effective study in half</div>
+        <div class="wit-item">You skip Physics tutorials or come unprepared</div>
+        <div class="wit-item">You blank in the HSC exam from under-preparation</div>
+      </div>
+      <div class="note">Maths Standard 2 holds you up but everything else drags you to ~68–71. Engineering Studies gets dropped either way.</div>
+    </div>
+  </div>
+
+  <div id="s1" class="scenario-card s1" style="display:none">
+    <div class="scenario-header">
+      <div class="scenario-title">😐 Stay Same — Consistent with current performance</div>
+      <div class="scenario-subtitle">Remaining tasks and HSC match your current average raw marks</div>
+    </div>
+    <div class="scenario-body">
+      <div class="atar-banner">
+        <div><div class="atar-num">~76–78</div><div class="atar-label">Predicted ATAR</div><div class="atar-agg">Aggregate ~330–340 / 500</div></div>
+        <div style="margin-left:auto;text-align:right"><div style="font-size:12px;color:var(--color-text-secondary)">Consistent with what<br>your friend calculated</div></div>
+      </div>
+      <table class="subject-table">
+        <tr><th>Subject</th><th>Assumed Raw HSC</th><th>Aligned Mark</th><th>Band</th><th>Scaled</th></tr>
+        <tr><td>English Standard</td><td>~73%</td><td>~79</td><td><span class="band b4">Band 4</span></td><td>~47</td></tr>
+        <tr><td>Maths Standard 2</td><td>~92%</td><td>~93</td><td><span class="band b6">Band 6</span></td><td>~87</td></tr>
+        <tr><td>Physics</td><td>~41%</td><td>~65</td><td><span class="band b3">Band 3</span></td><td>~60</td></tr>
+        <tr><td>Enterprise Computing</td><td>~77%</td><td>~84</td><td><span class="band b5">Band 5</span></td><td>~72</td></tr>
+        <tr><td>Software Engineering</td><td>~56%</td><td>~76</td><td><span class="band b4">Band 4</span></td><td>~67</td></tr>
+        <tr class="dropped"><td>Engineering Studies</td><td>~47%</td><td>~67</td><td><span class="band b3">Band 3</span></td><td>~46 (dropped)</td></tr>
+      </table>
+      <div class="what-it-takes">
+        <div class="wit-title">What this looks like</div>
+        <div class="wit-item">You study but without major changes to how or what</div>
+        <div class="wit-item">Physics stays around 40–45% raw in the HSC exam</div>
+        <div class="wit-item">Maths stays strong — your biggest asset</div>
+        <div class="wit-item">Enterprise stays Band 5 — teacher was right</div>
+      </div>
+      <div class="note">This is your baseline. 76–78 is a solid ATAR. Aligns almost exactly with your friend's 75.2 estimate using aligned marks.</div>
+    </div>
+  </div>
+
+  <div id="s2" class="scenario-card s2" style="display:none">
+    <div class="scenario-header">
+      <div class="scenario-title">💪 Push Hard — Maximum realistic effort from now</div>
+      <div class="scenario-subtitle">Remaining tasks improve, HSC exam marks jump meaningfully</div>
+    </div>
+    <div class="scenario-body">
+      <div class="atar-banner">
+        <div><div class="atar-num">~83–86</div><div class="atar-label">Predicted ATAR</div><div class="atar-agg">Aggregate ~370–390 / 500</div></div>
+        <div style="margin-left:auto;text-align:right"><div style="font-size:12px;color:var(--color-text-secondary)">Realistic ceiling if you<br>execute the timetable</div></div>
+      </div>
+      <table class="subject-table">
+        <tr><th>Subject</th><th>Assumed Raw HSC</th><th>Aligned Mark</th><th>Band</th><th>Scaled</th></tr>
+        <tr><td>English Standard</td><td>~80%</td><td>~83</td><td><span class="band b5">Band 5</span></td><td>~54</td></tr>
+        <tr><td>Maths Standard 2</td><td>~95%</td><td>~96</td><td><span class="band b6">Band 6</span></td><td>~92</td></tr>
+        <tr><td>Physics</td><td>~62%</td><td>~76</td><td><span class="band b4">Band 4</span></td><td>~73</td></tr>
+        <tr><td>Enterprise Computing</td><td>~82%</td><td>~88</td><td><span class="band b5">Band 5</span></td><td>~77</td></tr>
+        <tr><td>Software Engineering</td><td>~72%</td><td>~82</td><td><span class="band b5">Band 5</span></td><td>~75</td></tr>
+        <tr class="dropped"><td>Engineering Studies</td><td>~55%</td><td>~72</td><td><span class="band b4">Band 4</span></td><td>~51 (dropped)</td></tr>
+      </table>
+      <div class="what-it-takes">
+        <div class="wit-title">What it actually takes to get here</div>
+        <div class="wit-item">Physics: 1 hour every single day, past papers only, no exceptions</div>
+        <div class="wit-item">Software: push from 56% to 72% raw — fully achievable with consistent work</div>
+        <div class="wit-item">Maths: maintain 90%+ — just don't let it slip</div>
+        <div class="wit-item">English: one full essay practice per week, get teacher feedback</div>
+        <div class="wit-item">Enterprise: stay consistent — you're already Band 5</div>
+        <div class="wit-item">Phone stays in another room during every single study block</div>
+      </div>
+      <div class="note">Engineering Studies still gets dropped even in the best case — its scaled mark won't beat Software or Enterprise. Focus energy elsewhere.</div>
+    </div>
+  </div>
+
+  <div class="lever-note">
+    <strong style="color:var(--color-text-primary)">The single biggest lever:</strong> Physics. Going from 41% to 62% raw in the HSC exam alone adds ~13 scaled marks which is roughly <strong style="color:var(--color-text-primary)">+5 to +7 ATAR points</strong>. No other subject gives you that return on effort because of how well Physics scales.
+  </div>
+
+
+  <h2 class="section-title">Master Study Timetable</h2>
+  
+  <div class="tip">
+    No separate homework blocks — homework is folded into each study session at the start. Weekend split: Saturday = Physics + Maths + Software + Enterprise. Sunday = Physics + English + Engineering + catch-up. Devices off 9:00–9:30pm → wind down → sleep 10pm. Physics every day non-negotiable.
+  </div>
+
+  <div class="freq-bar">
+    <div class="freq-item"><div class="freq-dot" style="background: #8b3520"></div> Physics: 7–8x · ~9hrs</div>
+    <div class="freq-item"><div class="freq-dot" style="background: #235209"></div> Maths: 3x · ~3hrs</div>
+    <div class="freq-item"><div class="freq-dot" style="background: #352f85"></div> Software: 5x · ~5hrs</div>
+    <div class="freq-item"><div class="freq-dot" style="background: #6b2039"></div> English: 5x · ~5hrs</div>
+    <div class="freq-item"><div class="freq-dot" style="background: #074d3e"></div> Enterprise: 4x · ~4hrs</div>
+    <div class="freq-item"><div class="freq-dot" style="background: #5c3506"></div> Engineering: 3x · ~3hrs</div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-title">Saturday sessions</div>
+      <div class="summary-row"><div class="dot" style="background:#8B3520"></div><span class="summary-text">Physics ★ — 1.5 hrs (past paper)</span></div>
+      <div class="summary-row"><div class="dot" style="background:#235209"></div><span class="summary-text">Maths — 1 hr</span></div>
+      <div class="summary-row"><div class="dot" style="background:#352F85"></div><span class="summary-text">Software — 1 hr</span></div>
+      <div class="summary-row"><div class="dot" style="background:#074D3E"></div><span class="summary-text">Enterprise — 1 hr</span></div>
+      <div class="summary-row"><div class="dot" style="background:#888"></div><span class="summary-text">Total study: ~4.5 hrs</span></div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-title">Sunday sessions</div>
+      <div class="summary-row"><div class="dot" style="background:#8B3520"></div><span class="summary-text">Physics ★ — 1 hr (mistake review)</span></div>
+      <div class="summary-row"><div class="dot" style="background:#6B2039"></div><span class="summary-text">English — 1.5 hrs</span></div>
+      <div class="summary-row"><div class="dot" style="background:#5C3506"></div><span class="summary-text">Engineering — 1 hr</span></div>
+      <div class="summary-row"><div class="dot" style="background:#888"></div><span class="summary-text">Catch-up buffer: 30 min</span></div>
+      <div class="summary-row"><div class="dot" style="background:#888"></div><span class="summary-text">Total study: ~4 hrs</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="pill ps">School</span>
+    <span class="pill ptr">Tutorial</span>
+    <span class="pill pfr">Free period</span>
+    <span class="pill pp">Physics ★</span>
+    <span class="pill pm">Maths</span>
+    <span class="pill pe">English</span>
+    <span class="pill psw">Software</span>
+    <span class="pill pent">Enterprise</span>
+    <span class="pill peng">Engineering</span>
+    <span class="pill pb">Break/Transit/Dinner</span>
+    <span class="pill psl">Wind down → Sleep</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab sched-tab active" onclick="showSched('a')">Week A</button>
+    <button class="tab sched-tab" onclick="showSched('b')">Week B</button>
+    <button class="tab sched-tab" onclick="showSched('sat')">Saturday</button>
+    <button class="tab sched-tab" onclick="showSched('sun')">Sunday</button>
+    <button class="tab sched-tab" onclick="showSched('tot')">Full Count</button>
+  </div>
+
+  <div id="wa" class="sched-panel">
+    <div class="sec">Week A — 4 May</div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Monday 4 May</span><span class="day-sub">Physics tutorial 7am · Enterprise P1 · Engineering P2 · Maths P3 · English P4 · Home ~3:55pm</span></div>
+      <div class="row"><div class="t">7:00–8:15am</div><span class="pill ptr">Tutorial</span><div><div class="lbl">Physics tutorial</div><div class="row-note">Bring 1 prepared question from last week every Monday</div></div></div>
+      <div class="row"><div class="t">8:20–2:40pm</div><span class="pill ps">School</span><div><div class="lbl">Enterprise P1 · Engineering P2 · Maths P3 · English P4</div></div></div>
+      <div class="row"><div class="t">2:40–3:55pm</div><span class="pill pb">Bus + wait</span><div><div class="lbl">Passive review — reread notes, no pressure</div></div></div>
+      <div class="row"><div class="t">3:55–4:30pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat, decompress, do nothing</div></div></div>
+      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — any homework first (5 min), then past paper questions</div><div class="row-note">One topic only. Questions → check → understand wrong answers</div></div></div>
+      <div class="row"><div class="t">5:30–5:40pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:40–6:40pm</div><span class="pill pe">English</span><div><div class="lbl">1 hr — any English homework first, then timed paragraph writing</div><div class="row-note">Get teacher to mark practice responses — fastest improvement method</div></div></div>
+      <div class="row"><div class="t">6:40–7:30pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax fully</div></div></div>
+      <div class="row"><div class="t">7:30–8:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">1 hr — any homework first, then content review pushing Band 6</div></div></div>
+      <div class="row"><div class="t">8:30–9:00pm</div><span class="pill pb">Free time</span><div><div class="lbl">Relax — no study</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down — no screens</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Tuesday 5 May</span><span class="day-sub">Maths P1 · Enterprise P2 · Physics P3 · Software P4 · Engineering P5 ends 4pm · Home ~4:50pm</span></div>
+      <div class="row"><div class="t">8:20–4:00pm</div><span class="pill ps">School</span><div><div class="lbl">Maths P1 · Enterprise P2 · Physics P3 · Software P4 · Engineering P5</div></div></div>
+      <div class="row"><div class="t">4:00–4:50pm</div><span class="pill pb">Bus home</span><div><div class="lbl">Longest day — arrive ~4:50pm</div></div></div>
+      <div class="row"><div class="t">4:50–5:30pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat properly, full rest — you've done a 4pm finish</div></div></div>
+      <div class="row"><div class="t">5:30–6:30pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — any homework first, then past paper one topic</div><div class="row-note">Heavy day — if genuinely exhausted, do 45 min and rest</div></div></div>
+      <div class="row"><div class="t">6:30–7:15pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:15–8:15pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — any homework first, then past papers or project</div></div></div>
+      <div class="row"><div class="t">8:15–9:00pm</div><span class="pill pb">Free time</span><div><div class="lbl">Relax — no study, you've had a massive day</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Wednesday 6 May</span><span class="day-sub">Physics P1 · Free P2 (11:30–12:50) · English P3 · Software P4 · Home ~3:55pm</span></div>
+      <div class="row"><div class="t">8:20–11:30am</div><span class="pill ps">School</span><div><div class="lbl">Physics P1</div></div></div>
+      <div class="row"><div class="t">11:30–12:50pm</div><span class="pill pfr">Free period</span><div><div class="lbl">Physics past paper at school — quietest window of the week</div><div class="row-note">No distractions, no phone, sit and do questions only</div></div></div>
+      <div class="row"><div class="t">12:50–2:40pm</div><span class="pill ps">School</span><div><div class="lbl">English P3 · Software P4</div></div></div>
+      <div class="row"><div class="t">2:40–3:55pm</div><span class="pill pb">Bus home</span><div></div></div>
+      <div class="row"><div class="t">3:55–4:30pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat, decompress</div></div></div>
+      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — any homework first, then past papers</div></div></div>
+      <div class="row"><div class="t">5:30–5:40pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:40–6:40pm</div><span class="pill pe">English</span><div><div class="lbl">1 hr — any homework first, then full timed essay paragraph</div></div></div>
+      <div class="row"><div class="t">6:40–7:30pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:30–8:30pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — different topic to Monday, past paper questions</div></div></div>
+      <div class="row"><div class="t">8:30–9:00pm</div><span class="pill pb">Free time</span><div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Thursday 7 May</span><span class="day-sub">Engineering P1 · Maths P2 · Enterprise P3 · Engineering tutorial 2:40–3:40 · Home ~4:10pm</span></div>
+      <div class="row"><div class="t">8:20–2:40pm</div><span class="pill ps">School</span><div><div class="lbl">Engineering P1 · Maths P2 · Enterprise P3</div></div></div>
+      <div class="row"><div class="t">2:40–3:40pm</div><span class="pill ptr">Tutorial</span><div><div class="lbl">Engineering tutorial</div><div class="row-note">Ask specifically about remaining assessment task content</div></div></div>
+      <div class="row"><div class="t">3:40–4:10pm</div><span class="pill pb">Bus home</span><div></div></div>
+      <div class="row"><div class="t">4:10–4:45pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat, rest</div></div></div>
+      <div class="row"><div class="t">4:45–5:45pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — past paper questions, pick new topic</div></div></div>
+      <div class="row"><div class="t">5:45–5:55pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:55–6:55pm</div><span class="pill peng">Engineering</span><div><div class="lbl">1 hr — any homework first, then highest weighted topics only</div><div class="row-note">Focus on assessable content from the tutorial today</div></div></div>
+      <div class="row"><div class="t">6:55–7:40pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:40–8:30pm</div><span class="pill pm">Maths</span><div><div class="lbl">50 min — any checklist first, then weakest topic this week</div></div></div>
+      <div class="row"><div class="t">8:30–9:00pm</div><span class="pill pb">Free time</span><div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Friday 8 May</span><span class="day-sub">Software P1 · Free P2 (10:10–11:30) · English P3 · Physics P4 · Home ~1:30pm ⭐ Best day</span></div>
+      <div class="row"><div class="t">8:20–10:10am</div><span class="pill ps">School</span><div><div class="lbl">Software P1</div></div></div>
+      <div class="row"><div class="t">10:10–11:30am</div><span class="pill pfr">Free period</span><div><div class="lbl">English essay draft at school</div><div class="row-note">Compulsory subject — use this free window for it</div></div></div>
+      <div class="row"><div class="t">11:30–12:50pm</div><span class="pill ps">School</span><div><div class="lbl">English P3 · Physics P4</div></div></div>
+      <div class="row"><div class="t">1:10–1:30pm</div><span class="pill pb">Bus home</span><div></div></div>
+      <div class="row"><div class="t">1:30–2:15pm</div><span class="pill pb">Break</span><div><div class="lbl">Lunch at home — proper break</div></div></div>
+      <div class="row"><div class="t">2:15–3:15pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — full timed past paper, exam conditions</div><div class="row-note">Best session of the week. Phone in another room. Timer on. Sit properly.</div></div></div>
+      <div class="row"><div class="t">3:15–4:15pm</div><span class="pill pb">Long break</span><div><div class="lbl">Full rest — school week is done, earn it</div></div></div>
+      <div class="row"><div class="t">4:15–5:15pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — any homework first, then past papers</div></div></div>
+      <div class="row"><div class="t">5:15–5:25pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:25–6:25pm</div><span class="pill pe">English</span><div><div class="lbl">1 hr — full essay or creative writing timed</div></div></div>
+      <div class="row"><div class="t">6:25–7:20pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:20–8:20pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">1 hr — push from Band 5 toward Band 6</div></div></div>
+      <div class="row"><div class="t">8:20–9:00pm</div><span class="pill pb">Free time</span><div><div class="lbl">Relax — end of week</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+  </div>
+
+  <div id="wb" class="sched-panel" style="display: none">
+    <div class="sec">Week B — 11 May</div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Monday 11 May</span><span class="day-sub">Physics tutorial 7am · Engineering P1 · Enterprise P2 · Maths P3 · English P4 · Home ~3:55pm</span></div>
+      <div class="row"><div class="t">7:00–8:15am</div><span class="pill ptr">Tutorial</span><div><div class="lbl">Physics tutorial</div><div class="row-note">Prepared question every Monday — no exceptions</div></div></div>
+      <div class="row"><div class="t">8:20–2:40pm</div><span class="pill ps">School</span><div><div class="lbl">Engineering P1 · Enterprise P2 · Maths P3 · English P4</div></div></div>
+      <div class="row"><div class="t">2:40–3:55pm</div><span class="pill pb">Bus + wait</span><div></div></div>
+      <div class="row"><div class="t">3:55–4:30pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat, decompress</div></div></div>
+      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — review what came up in morning tutorial</div></div></div>
+      <div class="row"><div class="t">5:30–5:40pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:40–6:40pm</div><span class="pill pe">English</span><div><div class="lbl">1 hr — any homework first, then timed essay writing</div></div></div>
+      <div class="row"><div class="t">6:40–7:30pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:30–8:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">1 hr — any homework first, then content review</div></div></div>
+      <div class="row"><div class="t">8:30–9:00pm</div><span class="pill pb">Free time</span><div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Tuesday 12 May</span><span class="day-sub">Software P1 · Physics P2 · Enterprise P3 · Engineering P4 · Maths P5 ends 4pm · Home ~4:50pm</span></div>
+      <div class="row"><div class="t">8:20–4:00pm</div><span class="pill ps">School</span><div><div class="lbl">Software P1 · Physics P2 · Enterprise P3 · Engineering P4 · Maths P5</div></div></div>
+      <div class="row"><div class="t">4:00–4:50pm</div><span class="pill pb">Bus home</span><div><div class="lbl">Hardest day of the fortnight</div></div></div>
+      <div class="row"><div class="t">4:50–5:30pm</div><span class="pill pb">Break</span><div><div class="lbl">Full rest — eat properly</div></div></div>
+      <div class="row"><div class="t">5:30–6:30pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — one topic, past paper questions</div></div></div>
+      <div class="row"><div class="t">6:30–7:15pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:15–8:15pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — any homework first, then past papers</div></div></div>
+      <div class="row"><div class="t">8:15–9:00pm</div><span class="pill pb">Free time</span><div><div class="lbl">Rest — big day done</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Wednesday 13 May</span><span class="day-sub">English P1 · Free P2 (10:10–11:30) · Physics P3 · Software P4 · Home ~3:55pm</span></div>
+      <div class="row"><div class="t">8:20–10:10am</div><span class="pill ps">School</span><div><div class="lbl">English P1</div></div></div>
+      <div class="row"><div class="t">10:10–11:30am</div><span class="pill pfr">Free period</span><div><div class="lbl">English essay draft at school</div><div class="row-note">Do it here — saves your evening for other subjects</div></div></div>
+      <div class="row"><div class="t">11:30–2:40pm</div><span class="pill ps">School</span><div><div class="lbl">Physics P3 · Software P4</div></div></div>
+      <div class="row"><div class="t">2:40–3:55pm</div><span class="pill pb">Bus home</span><div></div></div>
+      <div class="row"><div class="t">3:55–4:30pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat, decompress</div></div></div>
+      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — past paper questions, new topic</div></div></div>
+      <div class="row"><div class="t">5:30–5:40pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:40–6:40pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — any homework first, then past papers</div></div></div>
+      <div class="row"><div class="t">6:40–7:30pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:30–8:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">1 hr — highest weighted topics, past paper questions</div></div></div>
+      <div class="row"><div class="t">8:30–9:00pm</div><span class="pill pb">Free time</span><div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Thursday 14 May</span><span class="day-sub">Late start — no P1 · Maths P2 (10:10) · Engineering P3 · Enterprise P4 · Engineering tutorial 2:40–3:40</span></div>
+      <div class="row"><div class="t">8:20–9:20am</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr at home — sharpest brain of the day</div><div class="row-note">Only late start of the fortnight — this is a gift, use it for Physics</div></div></div>
+      <div class="row"><div class="t">9:20–10:00am</div><span class="pill pb">Break</span><div><div class="lbl">Get ready for school, eat</div></div></div>
+      <div class="row"><div class="t">10:10–2:40pm</div><span class="pill ps">School</span><div><div class="lbl">Maths P2 · Engineering P3 · Enterprise P4</div></div></div>
+      <div class="row"><div class="t">2:40–3:40pm</div><span class="pill ptr">Tutorial</span><div><div class="lbl">Engineering tutorial</div><div class="row-note">Ask about highest weighted remaining assessment content</div></div></div>
+      <div class="row"><div class="t">3:40–4:10pm</div><span class="pill pb">Bus home</span><div></div></div>
+      <div class="row"><div class="t">4:10–4:45pm</div><span class="pill pb">Break</span><div><div class="lbl">Eat, rest</div></div></div>
+      <div class="row"><div class="t">4:45–5:45pm</div><span class="pill pm">Maths</span><div><div class="lbl">1 hr — checklist first (10 min), then weakest topic practice</div><div class="row-note">Already did Physics this morning — Maths fills the afternoon slot</div></div></div>
+      <div class="row"><div class="t">5:45–5:55pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:55–6:55pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — past papers or project</div></div></div>
+      <div class="row"><div class="t">6:55–7:40pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:40–8:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">50 min — content review, push Band 6</div></div></div>
+      <div class="row"><div class="t">8:30–9:00pm</div><span class="pill pb">Free time</span><div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Friday 15 May</span><span class="day-sub">Physics P1 · Software P2 · English P3 · Home ~1:30pm ⭐ Best day</span></div>
+      <div class="row"><div class="t">8:20–12:50pm</div><span class="pill ps">School</span><div><div class="lbl">Physics P1 · Software P2 · English P3</div></div></div>
+      <div class="row"><div class="t">1:10–1:30pm</div><span class="pill pb">Bus home</span><div></div></div>
+      <div class="row"><div class="t">1:30–2:15pm</div><span class="pill pb">Break</span><div><div class="lbl">Lunch at home — proper break</div></div></div>
+      <div class="row"><div class="t">2:15–3:15pm</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — timed past paper, full exam conditions</div><div class="row-note">Best session of the week. Phone in another room. Timer on.</div></div></div>
+      <div class="row"><div class="t">3:15–4:15pm</div><span class="pill pb">Long break</span><div><div class="lbl">Full rest — week is done, earn it</div></div></div>
+      <div class="row"><div class="t">4:15–5:15pm</div><span class="pill pe">English</span><div><div class="lbl">1 hr — any homework first, then full essay practice</div></div></div>
+      <div class="row"><div class="t">5:15–5:25pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">5:25–6:25pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — any homework first, then past papers</div></div></div>
+      <div class="row"><div class="t">6:25–7:20pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat, relax</div></div></div>
+      <div class="row"><div class="t">7:20–8:20pm</div><span class="pill pm">Maths</span><div><div class="lbl">1 hr — practice questions, maintain Band 6</div></div></div>
+      <div class="row"><div class="t">8:20–9:00pm</div><span class="pill pb">Free time</span><div><div class="lbl">Relax — end of week</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+  </div>
+
+  <div id="sat" class="sched-panel" style="display:none">
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Saturday</span><span class="day-sub">4 study sessions · ~4.5 hrs total · First half of subjects</span></div>
+      <div class="divider">Morning block</div>
+      <div class="row"><div class="t">8:30–9:00am</div><span class="pill pb">Wake up</span><div><div class="lbl">Eat breakfast, get ready properly</div><div class="row-note">Don't rush into study — give your brain 30 min to wake up</div></div></div>
+      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics ★</span><div><div class="lbl">1.5 hrs — full timed past paper, exam conditions</div><div class="row-note">Saturday is your longest Physics session. Sit at a desk. Timer on. Phone in another room. Rotate to a topic you haven't done this week.</div></div></div>
+      <div class="row"><div class="t">10:30–10:45am</div><span class="pill pb">Break</span><div><div class="lbl">Get up, stretch, water</div></div></div>
+      <div class="row"><div class="t">10:45–11:45am</div><span class="pill pm">Maths</span><div><div class="lbl">1 hr — weakest topic from this week</div><div class="row-note">Practice questions only — you're talented here, just maintain sharpness</div></div></div>
+      <div class="divider">Midday break</div>
+      <div class="row"><div class="t">11:45am–1:00pm</div><span class="pill pb">Lunch break</span><div><div class="lbl">Proper meal, full rest, go outside if you can</div><div class="row-note">This break is important — you've done 2.5 hrs already, your brain needs fuel</div></div></div>
+      <div class="divider">Afternoon block</div>
+      <div class="row"><div class="t">1:00–2:00pm</div><span class="pill psw">Software</span><div><div class="lbl">1 hr — past papers or project work</div><div class="row-note">Scales well — treat this seriously on weekends when you have more time</div></div></div>
+      <div class="row"><div class="t">2:00–2:10pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">2:10–3:10pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">1 hr — content review, push from Band 5 toward Band 6</div><div class="row-note">Use this longer session to go through past HSC questions properly</div></div></div>
+      <div class="divider">Free afternoon</div>
+      <div class="row"><div class="t">3:10pm onwards</div><span class="pill pb">Full free time</span><div><div class="lbl">Done studying for today — rest, socialise, do whatever</div><div class="row-note">You've earned it. 4.5 hrs on a Saturday is excellent.</div></div></div>
+      <div class="row"><div class="t">6:30–7:30pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat properly</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down — no screens</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div></div></div>
+    </div>
+  </div>
+
+  <div id="sun" class="sched-panel" style="display:none">
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Sunday</span><span class="day-sub">3–4 study sessions · ~4 hrs total · Second half of subjects</span></div>
+      <div class="divider">Morning block</div>
+      <div class="row"><div class="t">8:30–9:00am</div><span class="pill pb">Wake up</span><div><div class="lbl">Eat breakfast, get ready</div></div></div>
+      <div class="row"><div class="t">9:00–10:00am</div><span class="pill pp">Physics ★</span><div><div class="lbl">1 hr — review every mistake from this week's past papers</div><div class="row-note">Wrong answers only. Understand each one fully before moving on. This session compounds everything from the week.</div></div></div>
+      <div class="row"><div class="t">10:00–10:15am</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">10:15–11:45am</div><span class="pill pe">English</span><div><div class="lbl">1.5 hrs — write a full timed essay response</div><div class="row-note">Sunday is your only chance for a full essay in one sitting. Time yourself strictly. Get it marked by teacher during the week.</div></div></div>
+      <div class="divider">Midday break</div>
+      <div class="row"><div class="t">11:45am–1:00pm</div><span class="pill pb">Lunch break</span><div><div class="lbl">Proper meal, full rest</div><div class="row-note">Same as Saturday — brain needs fuel after 2.5 hrs</div></div></div>
+      <div class="divider">Afternoon block</div>
+      <div class="row"><div class="t">1:00–2:00pm</div><span class="pill peng">Engineering</span><div><div class="lbl">1 hr — highest weighted topics, past paper questions</div><div class="row-note">Sunday gives you a longer Engineering session than weekdays — use it for the hardest content</div></div></div>
+      <div class="row"><div class="t">2:00–2:10pm</div><span class="pill pb">Break</span><div></div></div>
+      <div class="row"><div class="t">2:10–2:40pm</div><span class="pill pb">Catch-up buffer</span><div><div class="lbl">30 min flex time</div><div class="row-note">If you missed a session during the week, use this to catch up. If you didn't miss anything — free time starts now.</div></div></div>
+      <div class="divider">Free afternoon</div>
+      <div class="row"><div class="t">2:40pm onwards</div><span class="pill pb">Full free time</span><div><div class="lbl">Done for the weekend — full rest before Monday</div><div class="row-note">Don't study Sunday evening — your brain needs to recover before the week starts again</div></div></div>
+      <div class="row"><div class="t">6:30–7:30pm</div><span class="pill pb">Dinner</span><div><div class="lbl">Eat properly</div></div></div>
+      <div class="row"><div class="t">9:00–9:30pm</div><span class="pill psl">Devices off</span><div><div class="lbl">Wind down — important before Monday tutorial at 7am</div></div></div>
+      <div class="row"><div class="t">10:00pm</div><span class="pill psl">Sleep ✓</span><div><div class="row-note">Good sleep Sunday night is more valuable than an extra study session</div></div></div>
+    </div>
+  </div>
+
+  <div id="tot" class="sched-panel" style="display:none">
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Full weekly subject count — weekdays + weekend</span><span class="day-sub">Including adjusted weekend sessions</span></div>
+      <div class="row"><div class="t">Physics</div><span class="pill pp">9–10 sessions</span><div><div class="lbl">~10–11 hrs/week</div><div class="row-note">Tutorial Mon + free period Wed A + daily evening sessions + Sat 1.5hr + Sun 1hr mistake review</div></div></div>
+      <div class="row"><div class="t">English</div><span class="pill pe">6 sessions</span><div><div class="lbl">~6.5 hrs/week</div><div class="row-note">Mon, Wed, Fri evenings + free periods + Sun 1.5hr full essay</div></div></div>
+      <div class="row"><div class="t">Software</div><span class="pill psw">6 sessions</span><div><div class="lbl">~6 hrs/week</div><div class="row-note">Tue, Wed, Thu B, Fri evenings + Sat 1hr</div></div></div>
+      <div class="row"><div class="t">Enterprise</div><span class="pill pent">5 sessions</span><div><div class="lbl">~5 hrs/week</div><div class="row-note">Mon, Thu B, Fri evenings + Sat 1hr + Mon B evening</div></div></div>
+      <div class="row"><div class="t">Engineering</div><span class="pill peng">4 sessions</span><div><div class="lbl">~4 hrs/week</div><div class="row-note">Tutorial Thu + Thu A evening + Wed B evening + Sun 1hr</div></div></div>
+      <div class="row"><div class="t">Maths</div><span class="pill pm">4 sessions</span><div><div class="lbl">~4 hrs/week</div><div class="row-note">Thu A, Fri B evenings + Sat 1hr + one weekday</div></div></div>
+    </div>
+    <div class="day">
+      <div class="day-hd"><span class="day-name">Weekend study hours vs weekday</span><span class="day-sub">How the weekend boosts your total</span></div>
+      <div class="row"><div class="t">Weekday total</div><span class="pill pb">~3 hrs/day</span><div><div class="lbl">~15 hrs Mon–Fri across all subjects</div></div></div>
+      <div class="row"><div class="t">Saturday total</div><span class="pill pp">~4.5 hrs</span><div><div class="lbl">Physics + Maths + Software + Enterprise</div></div></div>
+      <div class="row"><div class="t">Sunday total</div><span class="pill pe">~4 hrs</span><div><div class="lbl">Physics + English + Engineering + buffer</div></div></div>
+      <div class="row"><div class="t">Weekly grand total</div><span class="pill pb">~23–24 hrs</span><div><div class="lbl">Across all 6 subjects every week</div><div class="row-note">This is genuinely enough to push from ATAR 77 toward 83–85 if the quality is high</div></div></div>
+    </div>
+  </div>
+
+<script>
+  function showAtar(n){
+    [0,1,2].forEach(i=>{
+      document.getElementById('s'+i).style.display = i===n ? 'block' : 'none';
+      document.querySelectorAll('.atar-tab')[i].classList.toggle('active', i===n);
+    });
+  }
+
+  function showSched(w){
+    const days = ['a', 'b', 'sat', 'sun', 'tot'];
+    days.forEach((day, i) => {
+      const el = document.getElementById(day === 'a' ? 'wa' : day === 'b' ? 'wb' : day);
+      if(el) el.style.display = day === w ? 'block' : 'none';
+      document.querySelectorAll('.sched-tab')[i].classList.toggle('active', day === w);
+    });
+  }
+</script>
+
+</div>
+</body>
+</html>
