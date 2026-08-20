@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ATAR Trajectory Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+    }
+    h2 { margin-top: 0; font-size: 1.5rem; color: #38bdf8; }
+    p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Academic Growth & ATAR Trajectory</h2>
+    <p>Hover over data points to inspect individual model outputs across academic stages.</p>
+    <canvas id="atarChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('atarChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Yr 11 Sem 1', 'Yr 11 Prelim', 'Yr 12 Sem 1', 'Yr 12 Term 3'],
+        datasets: [
+          {
+            label: 'UAC Model',
+            data: [55.20, 45.80, 66.90, 76.25],
+            borderColor: '#38bdf8',
+            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+            borderWidth: 3,
+            tension: 0.3,
+            fill: true
+          },
+          {
+            label: 'HSC Ninja',
+            data: [52.42, 42.28, 64.94, 75.05],
+            borderColor: '#a855f7',
+            backgroundColor: 'transparent',
+            borderWidth: 3,
+            borderDash: [5, 5],
+            tension: 0.3
+          },
+          {
+            label: 'Matrix Education',
+            data: [50.55, 40.65, 63.90, 73.45],
+            borderColor: '#f43f5e',
+            backgroundColor: 'transparent',
+            borderWidth: 3,
+            tension: 0.3
+          },
+          {
+            label: '80.00+ Goal Threshold',
+            data: [80, 80, 80, 80],
+            borderColor: '#22c55e',
+            borderWidth: 2,
+            borderDash: [2, 2],
+            pointRadius: 0,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#cbd5e1', font: { size: 13 } } },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            backgroundColor: '#0f172a',
+            titleColor: '#38bdf8',
+            bodyColor: '#f8fafc',
+            borderColor: '#334155',
+            borderWidth: 1
+          }
+        },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { 
+            min: 35, 
+            max: 85, 
+            grid: { color: '#334155' }, 
+            ticks: { color: '#94a3b8', stepSize: 5 } 
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
