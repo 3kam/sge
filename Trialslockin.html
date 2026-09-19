@@ -1,434 +1,1458 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trials Timetable — 5 Jul to 18 Aug 2026</title>
-<style>
-  :root {
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --color-background-primary: #ffffff;
-    --color-background-secondary: #f8fafc;
-    --color-border-primary: #94a3b8;
-    --color-border-secondary: #cbd5e1;
-    --color-border-tertiary: #e2e8f0;
-    --color-text-primary: #0f172a;
-    --color-text-secondary: #475569;
-    --border-radius-md: 6px;
-    --border-radius-lg: 10px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #f1f5f9; display: flex; justify-content: center; padding: 1rem; font-family: var(--font-sans); }
-  .wrap { padding: 1.5rem; max-width: 820px; width: 100%; background: #fff; border-radius: var(--border-radius-lg); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-  h1.main-title { font-size: 20px; color: var(--color-text-primary); margin-bottom: 4px; }
-  .subtitle { font-size: 12.5px; color: var(--color-text-secondary); margin-bottom: 1rem; }
-  h2.section-title { font-size: 16px; color: var(--color-text-primary); margin-bottom: 10px; margin-top: 1.4rem; border-bottom: 2px solid var(--color-border-tertiary); padding-bottom: 6px;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trials Timetable — 5 Jul to 18 Aug 2026</title>
+  <style>
+    :root {
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f8fafc;
+      --color-border-primary: #94a3b8;
+      --color-border-secondary: #cbd5e1;
+      --color-border-tertiary: #e2e8f0;
+      --color-text-primary: #0f172a;
+      --color-text-secondary: #475569;
+      --border-radius-md: 6px;
+      --border-radius-lg: 10px;
+    }
 
-  .tip { border-left: 3px solid #16a34a; padding: 10px 14px; font-size: 12.5px; color: var(--color-text-secondary); margin-bottom: 1rem; line-height: 1.6; background: #f0fdf4;}
-  .tip b { color: var(--color-text-primary); }
-  .tip-amber { border-left-color: #d97706; background: #fffbeb; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .freq-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); margin-bottom: 1.1rem; border: 1px solid var(--color-border-tertiary);}
-  .freq-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--color-text-secondary); }
-  .freq-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    body {
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      font-family: var(--font-sans);
+    }
 
-  .tabs { display: flex; gap: 6px; margin-bottom: 1.3rem; flex-wrap: wrap; }
-  .tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 1px solid var(--color-border-secondary); font-size: 12.5px; cursor: pointer; background: #fff; color: var(--color-text-secondary); font-weight: 400; transition: all 0.15s;}
-  .tab.active { font-weight: 600; border-color: var(--color-border-primary); background: var(--color-background-secondary); color: var(--color-text-primary); }
+    .wrap {
+      padding: 1.5rem;
+      max-width: 820px;
+      width: 100%;
+      background: #fff;
+      border-radius: var(--border-radius-lg);
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
 
-  .sec { font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; margin-top: 0.2rem;}
+    h1.main-title {
+      font-size: 20px;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
 
-  .day { background: #fff; border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 10px; overflow: hidden; }
-  .day.exam-day { border-color: #C1442D; border-width: 1.5px; }
-  .day-hd { padding: 9px 14px; background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 3px; }
-  .day.exam-day .day-hd { background: #FEECEA; }
-  .day-name { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
-  .day-sub { font-size: 11px; color: var(--color-text-secondary); }
-  .row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--color-border-tertiary); }
-  .row:last-child { border-bottom: none; }
-  .t { font-size: 11px; color: var(--color-text-secondary); min-width: 92px; padding-top: 2px; line-height: 1.4; flex-shrink: 0; }
-  .pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; min-width: 76px; text-align: center; flex-shrink: 0; height: fit-content; }
+    .subtitle {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      margin-bottom: 1rem;
+    }
 
-  .pp { background: #faece7; color: #8b3520; }
-  .pm { background: #eaf3de; color: #235209; }
-  .pe { background: #fbeaf0; color: #6b2039; }
-  .psw { background: #eeedfe; color: #352f85; }
-  .pent { background: #e1f5ee; color: #074d3e; }
-  .peng { background: #faeeda; color: #5c3506; }
-  .pb { background: var(--color-background-secondary); color: var(--color-text-secondary); }
-  .pexam { background: #C1442D; color: #fff; }
-  .psl { background: #ede9fe; color: #4c1d95; }
-  .ps { background: #e6f1fb; color: #0c447c; }
+    h2.section-title {
+      font-size: 16px;
+      color: var(--color-text-primary);
+      margin-bottom: 10px;
+      margin-top: 1.4rem;
+      border-bottom: 2px solid var(--color-border-tertiary);
+      padding-bottom: 6px;
+    }
 
-  .lbl { font-size: 12px; color: var(--color-text-primary); line-height: 1.4; }
-  .row-note { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+    .tip {
+      border-left: 3px solid #16a34a;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      background: #f0fdf4;
+    }
 
-  .sched-panel { display: none; }
-  .sched-panel.active { display: block; }
+    .tip b {
+      color: var(--color-text-primary);
+    }
 
-  .freq-check-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-  .freq-check-table th { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .04em; padding: 8px 10px; text-align: left; background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); }
-  .freq-check-table td { font-size: 12.5px; padding: 8px 10px; border-bottom: 1px solid var(--color-border-tertiary); color: var(--color-text-primary); }
-</style>
+    .tip-amber {
+      border-left-color: #d97706;
+      background: #fffbeb;
+    }
+
+    .freq-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--color-background-secondary);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: 1.1rem;
+      border: 1px solid var(--color-border-tertiary);
+    }
+
+    .freq-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--color-text-secondary);
+    }
+
+    .freq-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.3rem;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 6px 14px;
+      border-radius: var(--border-radius-md);
+      border: 1px solid var(--color-border-secondary);
+      font-size: 12.5px;
+      cursor: pointer;
+      background: #fff;
+      color: var(--color-text-secondary);
+      font-weight: 400;
+      transition: all 0.15s;
+    }
+
+    .tab.active {
+      font-weight: 600;
+      border-color: var(--color-border-primary);
+      background: var(--color-background-secondary);
+      color: var(--color-text-primary);
+    }
+
+    .sec {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      margin-top: 0.2rem;
+    }
+
+    .day {
+      background: #fff;
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .day.exam-day {
+      border-color: #C1442D;
+      border-width: 1.5px;
+    }
+
+    .day-hd {
+      padding: 9px 14px;
+      background: var(--color-background-secondary);
+      border-bottom: 1px solid var(--color-border-tertiary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+
+    .day.exam-day .day-hd {
+      background: #FEECEA;
+    }
+
+    .day-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .day-sub {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+    }
+
+    .row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--color-border-tertiary);
+    }
+
+    .row:last-child {
+      border-bottom: none;
+    }
+
+    .t {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      min-width: 92px;
+      padding-top: 2px;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+
+    .pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      min-width: 76px;
+      text-align: center;
+      flex-shrink: 0;
+      height: fit-content;
+    }
+
+    .pp {
+      background: #faece7;
+      color: #8b3520;
+    }
+
+    .pm {
+      background: #eaf3de;
+      color: #235209;
+    }
+
+    .pe {
+      background: #fbeaf0;
+      color: #6b2039;
+    }
+
+    .psw {
+      background: #eeedfe;
+      color: #352f85;
+    }
+
+    .pent {
+      background: #e1f5ee;
+      color: #074d3e;
+    }
+
+    .peng {
+      background: #faeeda;
+      color: #5c3506;
+    }
+
+    .pb {
+      background: var(--color-background-secondary);
+      color: var(--color-text-secondary);
+    }
+
+    .pexam {
+      background: #C1442D;
+      color: #fff;
+    }
+
+    .psl {
+      background: #ede9fe;
+      color: #4c1d95;
+    }
+
+    .ps {
+      background: #e6f1fb;
+      color: #0c447c;
+    }
+
+    .lbl {
+      font-size: 12px;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+    }
+
+    .row-note {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    .sched-panel {
+      display: none;
+    }
+
+    .sched-panel.active {
+      display: block;
+    }
+
+    .freq-check-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+
+    .freq-check-table th {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 8px 10px;
+      text-align: left;
+      background: var(--color-background-secondary);
+      border-bottom: 1px solid var(--color-border-tertiary);
+    }
+
+    .freq-check-table td {
+      font-size: 12.5px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--color-border-tertiary);
+      color: var(--color-text-primary);
+    }
+  </style>
 </head>
+
 <body>
-<div class="wrap">
+  <div class="wrap">
 
-  <h1 class="main-title">Trials Timetable</h1>
-  <div class="subtitle">Sunday 5 July → Tuesday 18 August 2026 &nbsp;·&nbsp; today is 5 Jul, trials run 3–18 Aug</div>
+    <h1 class="main-title">Trials Timetable</h1>
+    <div class="subtitle">Sunday 5 July → Tuesday 18 August 2026 &nbsp;·&nbsp; today is 5 Jul, trials run 3–18 Aug</div>
 
-  <div class="tip">
-    <b>The specific gaps, not generic revision:</b> Personal & Public Transport is the one Engineering Studies module dragging the whole subject down (29% vs a class average of 51% — Civil and Telecommunications are both close to your class average already). Secure Software Architecture is the specific Software Engineering weak point (50% open-book — that's a depth problem, not a recall problem). Nature of Light and Electromagnetism are your two below-class-average Physics modules; Advanced Mechanics is already your best of the three. Every session below names the actual sub-topic, not just the subject.
-  </div>
-
-  <div class="tip">
-    <b>Physics scope, from your teacher's notice:</b> Modules 5 (Advanced Mechanics) and 6 (Electromagnetism) — all inquiry questions. Module 7 (Nature of Light) — all inquiry questions. Module 8 — only 8.2 (Structure of the Atom) and 8.3 (Quantum Mechanical Nature of the Atom); 8.4 (Properties of the Nucleus) isn't taught until weeks 1–2 of next term, so it's not in this plan's holiday content, only after school's back. Three official practice papers are being released — one today (5 Jul), one next week, one in the second week of the break — this timetable sits all three under real exam conditions (3 hrs + 5 min reading), marks them against the criteria, and redoes every question not scored 100% after a short gap, exactly as recommended.
-  </div>
-
-  <div class="tip tip-amber">
-    <b>Holiday vs term-time:</b> the frequencies below (Physics 7×, English 6×, Maths 5×, Software 5×, Enterprise 5×, Engineering 3–4× per week) are fully hit during the holidays, where you've got 7–9 hrs/day. Once school's back on 21 July, a 2.5–3 hr weeknight physically can't carry that many sessions — the "Back at School" tab shows the realistic compressed version, same priority order, weekends doing the heavy lifting to close the gap.
-  </div>
-
-  <div class="freq-bar">
-    <div class="freq-item"><div class="freq-dot" style="background:#8b3520"></div> Physics: 7×/week</div>
-    <div class="freq-item"><div class="freq-dot" style="background:#6b2039"></div> English: 6×/week</div>
-    <div class="freq-item"><div class="freq-dot" style="background:#235209"></div> Maths: 5×/week</div>
-    <div class="freq-item"><div class="freq-dot" style="background:#352f85"></div> Software: 5×/week</div>
-    <div class="freq-item"><div class="freq-dot" style="background:#074d3e"></div> Enterprise: 5×/week</div>
-    <div class="freq-item"><div class="freq-dot" style="background:#5c3506"></div> Engineering: 3–4×/week</div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab sched-tab active" data-panel="hw1" onclick="showSched('hw1')">Holiday Wk1</button>
-    <button class="tab sched-tab" data-panel="hw2" onclick="showSched('hw2')">Holiday Wk2</button>
-    <button class="tab sched-tab" data-panel="school" onclick="showSched('school')">Back at School</button>
-    <button class="tab sched-tab" data-panel="exam1" onclick="showSched('exam1')">Exam Wk1</button>
-    <button class="tab sched-tab" data-panel="engpush" onclick="showSched('engpush')">Eng Studies Push</button>
-    <button class="tab sched-tab" data-panel="finalpush" onclick="showSched('finalpush')">Final Push</button>
-    <button class="tab sched-tab" data-panel="check" onclick="showSched('check')">Frequency Check</button>
-  </div>
-
-  <!-- ================= HOLIDAY WEEK 1 ================= -->
-  <div id="hw1" class="sched-panel active">
-    <div class="sec">Sun 5 – Sat 11 July &middot; 7–9 hrs/day &middot; goal: close the 3 named gaps before school's back</div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Sunday 5 July</span><span class="day-sub">4 sessions &middot; ~6 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Review classwork/notes on Structure of the Atom (8.2) and Quantum Mechanical Nature of the Atom (8.3) — both examinable and already taught. Practice Paper 1 was released today; you're sitting it Thursday, so this is prep</div></div></div>
-      <div class="row"><div class="t">10:45am–12:15pm</div><span class="pill pm">Maths</span><div><div class="lbl">Networks & critical path analysis — mixed practice set</div></div></div>
-      <div class="row"><div class="t">1:15–2:45pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture: authentication & encryption fundamentals — start from the basics, this is where Task 2 fell to 50% even open-book</div></div></div>
-      <div class="row"><div class="t">3:00–4:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Data science content review — you're already at the class median here, this is maintenance</div></div></div>
-      <div class="row"><div class="t">4:30pm onward</div><span class="pill pb">Free / rest</span><div><div class="lbl">Properly switch off — Sunday nights matter for the week ahead</div></div></div>
+    <div class="tip">
+      <b>The specific gaps, not generic revision:</b> Personal & Public Transport is the one Engineering Studies module
+      dragging the whole subject down (29% vs a class average of 51% — Civil and Telecommunications are both close to
+      your class average already). Secure Software Architecture is the specific Software Engineering weak point (50%
+      open-book — that's a depth problem, not a recall problem). Nature of Light and Electromagnetism are your two
+      below-class-average Physics modules; Advanced Mechanics is already your best of the three. Every session below
+      names the actual sub-topic, not just the subject.
     </div>
 
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Monday 6 July</span><span class="day-sub">5 sessions &middot; ~7.5 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Nature of Light: wave-particle duality + the photoelectric effect — your furthest-behind module (37.5% vs a class average of 54%)</div></div></div>
-      <div class="row"><div class="t">10:45am–12:15pm</div><span class="pill pe">English</span><div><div class="lbl">Human Experiences: unseen-text technique — practice reading + answering under time pressure</div></div></div>
-      <div class="row"><div class="t">1:15–2:45pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Personal & Public Transport — rebuild from scratch, starting with vehicle systems fundamentals. This is your single biggest fixable gap in any subject (29% vs a class average of 51%)</div></div></div>
-      <div class="row"><div class="t">3:00–4:00pm</div><span class="pill pm">Maths</span><div><div class="lbl">Bivariate data analysis — practice set</div></div></div>
-      <div class="row"><div class="t">4:15–5:15pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Data visualisation — content review</div></div></div>
+    <div class="tip">
+      <b>Physics scope, from your teacher's notice:</b> Modules 5 (Advanced Mechanics) and 6 (Electromagnetism) — all
+      inquiry questions. Module 7 (Nature of Light) — all inquiry questions. Module 8 — only 8.2 (Structure of the Atom)
+      and 8.3 (Quantum Mechanical Nature of the Atom); 8.4 (Properties of the Nucleus) isn't taught until weeks 1–2 of
+      next term, so it's not in this plan's holiday content, only after school's back. Three official practice papers
+      are being released — one today (5 Jul), one next week, one in the second week of the break — this timetable sits
+      all three under real exam conditions (3 hrs + 5 min reading), marks them against the criteria, and redoes every
+      question not scored 100% after a short gap, exactly as recommended.
     </div>
 
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Tuesday 7 July</span><span class="day-sub">4 sessions &middot; ~6.5 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Nature of Light: Bohr model + atomic emission spectra, then special relativity — time dilation, length contraction, mass-energy equivalence</div></div></div>
-      <div class="row"><div class="t">10:45am–12:15pm</div><span class="pill pe">English</span><div><div class="lbl">Human Experiences: sustained response to your prescribed text — full practice paragraph</div></div></div>
-      <div class="row"><div class="t">1:15–2:45pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture: threat modelling & secure design principles</div></div></div>
-      <div class="row"><div class="t">3:00–4:00pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Intelligent systems — content review</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Wednesday 8 July</span><span class="day-sub">4 sessions &middot; ~7 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Electromagnetism: motors — torque, force on current-carrying conductors. Your class averaged only 33% here, so this is a hard topic for almost everyone, but you're still under even that</div></div></div>
-      <div class="row"><div class="t">10:45am–12:15pm</div><span class="pill pe">English</span><div><div class="lbl">Module A (Language, Identity & Culture) — essay practice</div></div></div>
-      <div class="row"><div class="t">1:15–2:45pm</div><span class="pill pm">Maths</span><div><div class="lbl">Annuities & loan repayments — practice set</div></div></div>
-      <div class="row"><div class="t">3:00–4:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Aeronautical Engineering — diagnostic pass. This module hasn't shown up in any task yet, so find out what you actually know before it becomes a surprise gap alongside Personal & Public Transport</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Thursday 9 July</span><span class="day-sub">4 sessions &middot; ~7.5 hrs &middot; Practice Paper 1 day</span></div>
-      <div class="row"><div class="t">9:00am–12:05pm</div><span class="pill pexam">Practice Paper</span><div><div class="lbl">Physics Practice Paper 1 (released Sunday) — full exam conditions, 3 hrs + 5 min reading, exactly like the real trial</div></div></div>
-      <div class="row"><div class="t">1:00–2:30pm</div><span class="pill pe">English</span><div><div class="lbl">Module B (Close Study of Literature) — essay practice</div></div></div>
-      <div class="row"><div class="t">2:45–4:15pm</div><span class="pill psw">Software</span><div><div class="lbl">Data security — safe collection, use and storage of data (SE-12-04), the second half of the Secure Architecture gap</div></div></div>
-      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Enterprise project / project management — content review, the 4th and final content area</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Friday 10 July</span><span class="day-sub">6 sessions &middot; ~8 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Electromagnetism: generators — magnetic flux, Faraday's & Lenz's laws</div></div></div>
-      <div class="row"><div class="t">10:45–11:15am</div><span class="pill pp">Physics</span><div><div class="lbl">Mark yesterday's Practice Paper 1 against the criteria and log every mistake — don't redo yet, that's tomorrow, per your teacher's "short period of time" advice</div></div></div>
-      <div class="row"><div class="t">11:30am–1:00pm</div><span class="pill pe">English</span><div><div class="lbl">Module C (Craft of Writing) — creative / discursive practice</div></div></div>
-      <div class="row"><div class="t">2:00–3:30pm</div><span class="pill pm">Maths</span><div><div class="lbl">Non-right-angle trigonometry — practice set</div></div></div>
-      <div class="row"><div class="t">3:45–5:15pm</div><span class="pill psw">Software</span><div><div class="lbl">Programming methodologies / SDLC (SE-12-01) — this was the stronger Task 1 area, keep it that way</div></div></div>
-      <div class="row"><div class="t">5:30–6:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Personal & Public Transport — practice questions, full past-paper-style responses</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Saturday 11 July</span><span class="day-sub">6 sessions &middot; ~8.5 hrs &middot; biggest day of the week</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Advanced Mechanics: circular motion + banked tracks (already your best of the three modules tested). Then redo every Practice Paper 1 question you didn't get 100% on — properly, not just reading the answer</div></div></div>
-      <div class="row"><div class="t">10:45am–12:15pm</div><span class="pill pe">English</span><div><div class="lbl">Full timed Paper 1 practice (1h40 incl. reading) + mark against the criteria yourself first</div></div></div>
-      <div class="row"><div class="t">1:15–2:15pm</div><span class="pill pm">Maths</span><div><div class="lbl">Non-linear relationships — practice set</div></div></div>
-      <div class="row"><div class="t">2:30–4:00pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture — first full past/sample paper attempt, untimed, see where marks actually go</div></div></div>
-      <div class="row"><div class="t">4:15–5:15pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Full familiarisation exam, untimed first pass</div></div></div>
-      <div class="row"><div class="t">5:30–6:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Diagram & drawing-convention practice — applies across all 4 modules, easy marks that get missed on presentation alone</div></div></div>
-    </div>
-  </div>
-
-  <!-- ================= HOLIDAY WEEK 2 ================= -->
-  <div id="hw2" class="sched-panel">
-    <div class="sec">Sun 12 – Sat 18 July &middot; same rhythm, shift from content → timed papers</div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Sunday 12 July</span><span class="day-sub">4 sessions &middot; ~6 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:30am</div><span class="pill pp">Physics</span><div><div class="lbl">Structure of the Atom (8.2): Rutherford scattering, Bohr model postulates & limitations — examinable and already taught. Also finish off Advanced Mechanics: projectile motion + gravitational fields, orbits, Kepler's laws. Properties of the Nucleus (8.4) isn't taught until weeks 1–2 of next term, so there's genuinely nothing to revise there yet</div></div></div>
-      <div class="row"><div class="t">10:45am–12:15pm</div><span class="pill pm">Maths</span><div><div class="lbl">Normal distribution — practice set</div></div></div>
-      <div class="row"><div class="t">1:15–2:45pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture — redo Saturday's paper questions you got wrong, properly this time</div></div></div>
-      <div class="row"><div class="t">3:00–4:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Mark last week's familiarisation exam against the guidelines, log every mistake</div></div></div>
-      <div class="row"><div class="t">4:30pm onward</div><span class="pill pb">Free / rest</span><div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Monday 13 July</span><span class="day-sub">5 sessions &middot; ~7.5 hrs</span></div>
-      <div class="row"><div class="t">9:00–10:40am</div><span class="pill pe">English</span><div><div class="lbl">FULL TIMED Paper 1 (1h40 incl. reading) + mark against the criteria</div></div></div>
-      <div class="row"><div class="t">10:55am–1:00pm</div><span class="pill pe">English</span><div><div class="lbl">FULL TIMED Paper 2 (2h05 incl. reading) + mark against the criteria</div></div></div>
-      <div class="row"><div class="t">2:00–3:30pm</div><span class="pill pp">Physics</span><div><div class="lbl">Nature of Light: build a full error log from last week's sessions, redo every question you got wrong</div></div></div>
-      <div class="row"><div class="t">3:45–4:45pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Personal & Public Transport — mop-up, lighter task after a heavy English day</div></div></div>
-      <div class="row"><div class="t">5:00–6:00pm</div><span class="pill pm">Maths</span><div><div class="lbl">Light practice set</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Tuesday 14 July</span><span class="day-sub">4 sessions &middot; ~7.5 hrs</span></div>
-      <div class="row"><div class="t">9:00am–12:05pm</div><span class="pill pexam">Practice Paper</span><div><div class="lbl">Physics Practice Paper 2 (released this week) — full exam conditions, 3 hrs + 5 min reading</div></div></div>
-      <div class="row"><div class="t">1:00–2:30pm</div><span class="pill pp">Physics</span><div><div class="lbl">Mark against the criteria and log every mistake — Light and Electromagnetism first. Redo them properly in a day or two, not right now</div></div></div>
-      <div class="row"><div class="t">2:45–4:15pm</div><span class="pill pe">English</span><div><div class="lbl">Cross-text session, not one at a time: pull your strongest quotes for Human Experiences, Module A and Module B into one running bank, plus your go-to techniques list for Module C — all four in the same sitting</div></div></div>
-      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture — remaining outcomes practice</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Wednesday 15 July</span><span class="day-sub">4 sessions &middot; ~7 hrs</span></div>
-      <div class="row"><div class="t">9:00–12:30pm</div><span class="pill pm">Maths</span><div><div class="lbl">FULL TIMED paper (2h40 incl. reading) + review</div></div></div>
-      <div class="row"><div class="t">1:30–3:00pm</div><span class="pill pp">Physics</span><div><div class="lbl">Electromagnetism: transformers, AC/DC, back-EMF — last of the core Electromagnetism content</div></div></div>
-      <div class="row"><div class="t">3:15–4:15pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Light review — you're stable here, this is upkeep</div></div></div>
-      <div class="row"><div class="t">4:30–5:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Aeronautical Engineering: core principles of flight — second pass since the diagnostic</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Thursday 16 July</span><span class="day-sub">3 sessions &middot; ~7.5 hrs</span></div>
-      <div class="row"><div class="t">9:00am–12:05pm</div><span class="pill peng">Engineering</span><div><div class="lbl">FULL TIMED paper #2 (3h5 incl. reading), all 4 modules — check whether Personal & Public Transport has actually moved since the diagnostic</div></div></div>
-      <div class="row"><div class="t">1:00–2:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Thorough review against marking guidelines</div></div></div>
-      <div class="row"><div class="t">2:45–4:45pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Full familiarisation exam #2, untimed</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Friday 17 July</span><span class="day-sub">4 sessions &middot; ~7 hrs</span></div>
-      <div class="row"><div class="t">9:00–12:30pm</div><span class="pill psw">Software</span><div><div class="lbl">FULL TIMED familiarisation/past exam — Secure Software Architecture questions especially + review</div></div></div>
-      <div class="row"><div class="t">1:30–3:00pm</div><span class="pill pe">English</span><div><div class="lbl">Rapid-fire recall: one paragraph each on Human Experiences, Module A and Module B back to back, no notes — whichever one you stumble on is your real weak point, not whichever "feels" weakest</div></div></div>
-      <div class="row"><div class="t">3:15–4:15pm</div><span class="pill pp">Physics</span><div><div class="lbl">Error-log review, Tuesday's paper</div></div></div>
-      <div class="row"><div class="t">4:30–5:15pm</div><span class="pill pm">Maths</span><div><div class="lbl">Simultaneous equations — practice set</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Saturday 18 July</span><span class="day-sub">6 sessions &middot; ~9 hrs &middot; Practice Paper 3 day</span></div>
-      <div class="row"><div class="t">9:00am–12:05pm</div><span class="pill pexam">Practice Paper</span><div><div class="lbl">Physics Practice Paper 3 (the final one, released this week) — full exam conditions, 3 hrs + 5 min reading. By now you've covered all of Modules 5–7 plus 8.2/8.3 — this is your best diagnostic yet</div></div></div>
-      <div class="row"><div class="t">1:00–2:00pm</div><span class="pill pp">Physics</span><div><div class="lbl">Mark against the criteria, log every mistake. Redo comes tomorrow, after a short gap</div></div></div>
-      <div class="row"><div class="t">2:15–3:00pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Content review — whichever of the 4 areas needs it most</div></div></div>
-      <div class="row"><div class="t">3:15–4:00pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Personal & Public Transport — final drilling for this block + diagram convention practice</div></div></div>
-      <div class="row"><div class="t">4:15–5:00pm</div><span class="pill psw">Software</span><div><div class="lbl">Programming code structures — selection, iteration (SE-12-02)</div></div></div>
-      <div class="row"><div class="t">5:15–6:00pm</div><span class="pill pe">English</span><div><div class="lbl">Timed practice paragraph — whichever of the three prescribed texts got the least airtime this week</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Sun 19 & Mon 20 July — tail of the break</span><span class="day-sub">light, deliberately</span></div>
-      <div class="row"><div class="t">Sun 19 Jul</div><span class="pill pb">Light</span><div><div class="lbl">Redo every Practice Paper 3 question you didn't get 100% on, then skim quick-reference/formula sheets for all 6 subjects, tidy notes, review every error log. Rest properly this afternoon.</div></div></div>
-      <div class="row"><div class="t">Mon 20 Jul</div><span class="pill pb">Light</span><div><div class="lbl">Pupil-free day for most schools — pack your bag, one quick pass over anything still shaky, early night before school's back.</div></div></div>
-    </div>
-  </div>
-
-  <!-- ================= BACK AT SCHOOL ================= -->
-  <div id="school" class="sched-panel">
-    <div class="sec">Repeats for both Tue 21 – Sun 26 Jul and Mon 27 Jul – Sun 2 Aug &middot; ~2.5–3 hrs on school nights, 5–6 hrs on weekends &middot; second time through, weekend sessions become full timed papers for English/Physics/Maths since their exams are the first week of trials</div>
-    <div class="tip tip-amber" style="margin-bottom:1rem">
-      <b>Properties of the Nucleus (8.4)</b> gets taught in class during weeks 1–2 of this term (roughly 21–31 July) — the one piece of trial content you haven't seen yet. As soon as it's covered in class, swap one Physics weeknight slot below for it (decay equations, half-life, mass defect, binding energy, fission/fusion) before it disappears into the trial untouched.
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Weeknight template &middot; Mon–Fri</span><span class="day-sub">2 sessions each &middot; ~2.5 hrs</span></div>
-      <div class="row"><div class="t">School day</div><span class="pill ps">School</span><div><div class="lbl">Home ~3:30–4pm, proper break before starting</div></div></div>
-      <div class="row"><div class="t">Mon eve</div><span class="pill pp">Physics</span> <span class="pill pe">English</span><div><div class="lbl">Physics: Light/Electromagnetism error-log redo &middot; English: Human Experiences</div></div></div>
-      <div class="row"><div class="t">Tue eve</div><span class="pill pp">Physics</span> <span class="pill pm">Maths</span><div><div class="lbl">Physics: targeted weak-topic practice &middot; Maths: targeted weak-topic practice</div></div></div>
-      <div class="row"><div class="t">Wed eve</div><span class="pill pp">Physics</span> <span class="pill pe">English</span><div><div class="lbl">Physics: continued &middot; English: Module A — don't let three days pass without touching a prescribed text</div></div></div>
-      <div class="row"><div class="t">Thu eve</div><span class="pill pp">Physics</span> <span class="pill pent">Enterprise</span><div><div class="lbl">Physics: continued &middot; Enterprise: whichever of the 4 areas is due for a pass</div></div></div>
-      <div class="row"><div class="t">Fri eve</div><span class="pill pp">Physics</span> <span class="pill pe">English</span><div><div class="lbl">Physics: continued &middot; English: Module B, then a quick 10-min quote refresh on Module C</div></div></div>
-      <div class="row-note" style="padding:8px 14px 12px">Devices off ~9:15pm, sleep by 10pm — sleep before an exam period matters more than one extra rep.</div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Saturday</span><span class="day-sub">5 sessions &middot; ~5.5 hrs</span></div>
-      <div class="row"><div class="t">9:00–11:30am</div><span class="pill pp">Physics</span><div><div class="lbl">FULL TIMED paper, weighted toward Light + Electromagnetism, lighter on Mechanics + review</div></div></div>
-      <div class="row"><div class="t">12:00–1:30pm</div><span class="pill pe">English</span><div><div class="lbl">Timed full response, rotate to whichever prescribed text got the least attention this week, incorporate any teacher feedback received</div></div></div>
-      <div class="row"><div class="t">2:00–3:00pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture — timed section</div></div></div>
-      <div class="row"><div class="t">3:15–4:00pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Content review</div></div></div>
-      <div class="row"><div class="t">4:15–5:00pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Personal & Public Transport final polish, or Aeronautical Engineering second pass</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Sunday</span><span class="day-sub">5 sessions &middot; ~5.5 hrs</span></div>
-      <div class="row"><div class="t">9:00–12:00pm</div><span class="pill pm">Maths</span><div><div class="lbl">FULL TIMED paper + review</div></div></div>
-      <div class="row"><div class="t">12:45–1:45pm</div><span class="pill pp">Physics</span><div><div class="lbl">Review every mistake from Saturday's paper, one by one, before moving on</div></div></div>
-      <div class="row"><div class="t">2:00–2:45pm</div><span class="pill pe">English</span><div><div class="lbl">Cross-text quote drill — rapid recall across all three prescribed texts plus Module C techniques, no notes</div></div></div>
-      <div class="row"><div class="t">3:00–3:45pm</div><span class="pill peng">Engineering</span><div><div class="lbl">MC drilling + diagram practice, all 4 modules</div></div></div>
-      <div class="row"><div class="t">4:00–4:45pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Whichever content area is weakest right now</div></div></div>
-      <div class="row-note" style="padding:8px 14px 12px">No study Sunday evening — full rest before Monday.</div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Second time through (27 Jul – 2 Aug): what changes</span><span class="day-sub">same template, escalating stakes</span></div>
-      <div class="row"><div class="t">All week</div><span class="pill pb">Note</span><div><div class="lbl">Same weeknight/weekend pattern above, with one change: English goes daily this week, not just Mon/Wed/Fri/Sat/Sun — it's your first exam (3–4 Aug) and you're carrying four texts, so every day gets at least 20–30 min of cross-text quote recall even on nights Physics or Maths takes the main slot. Every Physics/English/Maths session becomes a full timed paper under real exam conditions. Software/Enterprise/Engineering stay on content + targeted practice — their exams aren't until the 13th–18th.</div></div></div>
-      <div class="row"><div class="t">Sun 2 Aug</div><span class="pill pb">Final prep</span><div><div class="lbl">Confidence-only review for English/Physics/Maths — formula sheets (Light + Electromagnetism traps specifically), quote banks, quick skims. No new content. Pack bags, early night.</div></div></div>
-    </div>
-  </div>
-
-  <!-- ================= EXAM WEEK 1 ================= -->
-  <div id="exam1" class="sched-panel">
-    <div class="sec">Mon 3 – Fri 7 August &middot; English, Physics & Maths &middot; manage energy, don't cram</div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Monday 3 August</span><span class="day-sub">EXAM: English Paper 1, 8:20–10:00am</span></div>
-      <div class="row"><div class="t">8:20–10:00am</div><span class="pill pexam">EXAM</span><div><div class="lbl">English Paper 1</div></div></div>
-      <div class="row"><div class="t">Evening</div><span class="pill pe">English</span><div><div class="lbl">Quick, calm review of Module A/B/C key points for tomorrow's Paper 2 — no cramming, 1 hr max</div></div></div>
-    </div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Tuesday 4 August</span><span class="day-sub">EXAM: English Paper 2, 8:20–10:25am</span></div>
-      <div class="row"><div class="t">8:20–10:25am</div><span class="pill pexam">EXAM</span><div><div class="lbl">English Paper 2</div></div></div>
-      <div class="row"><div class="t">Rest of day</div><span class="pill pb">Rest</span><div><div class="lbl">English trials are done — properly rest</div></div></div>
-      <div class="row"><div class="t">Evening</div><span class="pill pp">Physics</span><div><div class="lbl">Light formula-sheet skim only, 45 min</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Wednesday 5 August</span><span class="day-sub">gap day &middot; only free full day before Thu/Fri</span></div>
-      <div class="row"><div class="t">Morning</div><span class="pill pp">Physics</span><div><div class="lbl">Final targeted review — Nature of Light and Electromagnetism, your two below-average modules, 2 hrs</div></div></div>
-      <div class="row"><div class="t">Afternoon</div><span class="pill pm">Maths</span><div><div class="lbl">Final targeted review of weak spots before Friday, 2 hrs</div></div></div>
-    </div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Thursday 6 August</span><span class="day-sub">EXAM: Physics, 12:30–3:35pm</span></div>
-      <div class="row"><div class="t">Morning</div><span class="pill pp">Physics</span><div><div class="lbl">Calm skim of formula sheet + common traps only, 45 min — exam is early afternoon, don't overdo it</div></div></div>
-      <div class="row"><div class="t">12:30–3:35pm</div><span class="pill pexam">EXAM</span><div><div class="lbl">Physics</div></div></div>
-      <div class="row"><div class="t">Evening</div><span class="pill pm">Maths</span><div><div class="lbl">Light formula-sheet skim only, 45 min</div></div></div>
-    </div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Friday 7 August</span><span class="day-sub">EXAM: Mathematics Standard 2, 12:30–3:10pm</span></div>
-      <div class="row"><div class="t">Morning</div><span class="pill pm">Maths</span><div><div class="lbl">Calm final skim only, 30 min</div></div></div>
-      <div class="row"><div class="t">12:30–3:10pm</div><span class="pill pexam">EXAM</span><div><div class="lbl">Mathematics Standard 2</div></div></div>
-      <div class="row"><div class="t">Evening</div><span class="pill pb">Rest</span><div><div class="lbl">Week one done — English, Physics and Maths all sat. Properly rest tonight, you've earned it.</div></div></div>
-    </div>
-  </div>
-
-  <!-- ================= ENGINEERING STUDIES PUSH ================= -->
-  <div id="engpush" class="sched-panel">
-    <div class="sec">Sat 8 – Thu 13 August &middot; a dedicated 6-day runway for your single biggest fixable gap</div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Saturday 8 August</span><span class="day-sub">recovery + restart</span></div>
-      <div class="row"><div class="t">Morning</div><span class="pill pb">Rest</span><div><div class="lbl">Sleep in, no guilt — you've just sat three exams in five days</div></div></div>
-      <div class="row"><div class="t">Afternoon</div><span class="pill peng">Engineering</span><div><div class="lbl">Review all 4 modules using your error logs from July's timed papers — Personal & Public Transport gets the most time, Aeronautical gets a final check since it's still your newest module, 3 hrs</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Sunday 9 August</span><span class="day-sub">full rehearsal</span></div>
-      <div class="row"><div class="t">9:00am–12:05pm</div><span class="pill peng">Engineering</span><div><div class="lbl">FULL TIMED final paper, all 4 modules, under real exam conditions</div></div></div>
-      <div class="row"><div class="t">1:00–2:30pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Thorough review against marking guidelines</div></div></div>
-      <div class="row"><div class="t">2:45–3:45pm</div><span class="pill peng">Engineering</span><div><div class="lbl">Diagram/drawing-convention drilling</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Monday 10 August</span><span class="day-sub">school night</span></div>
-      <div class="row"><div class="t">Evening</div><span class="pill peng">Engineering</span><div><div class="lbl">Personal & Public Transport — final targeted practice, 2.5 hrs</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Tuesday 11 August</span><span class="day-sub">school night</span></div>
-      <div class="row"><div class="t">Evening</div><span class="pill peng">Engineering</span><div><div class="lbl">Aeronautical Engineering + Telecommunications — multiple-choice drilling, 2.5 hrs</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Wednesday 12 August</span><span class="day-sub">night before &middot; no new content</span></div>
-      <div class="row"><div class="t">Evening</div><span class="pill peng">Engineering</span><div><div class="lbl">Light final review only — quick-reference sheets, MC practice. No new content. Early night, ~1.5 hrs max.</div></div></div>
-    </div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Thursday 13 August</span><span class="day-sub">EXAM: Engineering Studies, 8:20–11:25am</span></div>
-      <div class="row"><div class="t">Morning</div><span class="pill peng">Engineering</span><div><div class="lbl">Calm 15–20 min skim of notes only before heading in</div></div></div>
-      <div class="row"><div class="t">8:20–11:25am</div><span class="pill pexam">EXAM</span><div><div class="lbl">Engineering Studies</div></div></div>
-      <div class="row"><div class="t">Rest of day</div><span class="pill pb">Rest</span><div><div class="lbl">Your biggest fix of the whole fortnight is done — properly rest this afternoon</div></div></div>
-      <div class="row"><div class="t">Evening (optional)</div><span class="pill psw">Software</span><div><div class="lbl">Light Secure Software Architecture warm-up, only if you've genuinely got energy for it</div></div></div>
-    </div>
-  </div>
-
-  <!-- ================= FINAL PUSH ================= -->
-  <div id="finalpush" class="sched-panel">
-    <div class="sec">Fri 14 – Tue 18 August &middot; Enterprise Computing & Software Engineering, back to back, then done</div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Friday 14 August</span><span class="day-sub">school night</span></div>
-      <div class="row"><div class="t">Evening</div><span class="pill pent">Enterprise</span><div><div class="lbl">Full content review across all 4 areas — data science, data visualisation, intelligent systems, enterprise project — weakest first, 2.5 hrs</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Saturday 15 August</span><span class="day-sub">two full papers</span></div>
-      <div class="row"><div class="t">9:00–11:20am</div><span class="pill psw">Software</span><div><div class="lbl">FULL TIMED final paper — Secure Software Architecture questions especially</div></div></div>
-      <div class="row"><div class="t">11:35am–12:35pm</div><span class="pill psw">Software</span><div><div class="lbl">Detailed review</div></div></div>
-      <div class="row"><div class="t">1:30–3:30pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Familiarisation exam, untimed</div></div></div>
-    </div>
-
-    <div class="day">
-      <div class="day-hd"><span class="day-name">Sunday 16 August</span><span class="day-sub">final rehearsal</span></div>
-      <div class="row"><div class="t">9:00–11:00am</div><span class="pill pent">Enterprise</span><div><div class="lbl">FULL TIMED final paper</div></div></div>
-      <div class="row"><div class="t">11:15am–12:15pm</div><span class="pill pent">Enterprise</span><div><div class="lbl">Review</div></div></div>
-      <div class="row"><div class="t">1:15–3:15pm</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture — final drilling on everything that's still shaky</div></div></div>
-    </div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Monday 17 August</span><span class="day-sub">EXAM: Enterprise Computing, 8:20–10:50am</span></div>
-      <div class="row"><div class="t">8:20–10:50am</div><span class="pill pexam">EXAM</span><div><div class="lbl">Enterprise Computing</div></div></div>
-      <div class="row"><div class="t">Afternoon</div><span class="pill psw">Software</span><div><div class="lbl">Secure Software Architecture final review only — one subject left, 1.5 hrs</div></div></div>
-    </div>
-
-    <div class="day exam-day">
-      <div class="day-hd"><span class="day-name">Tuesday 18 August</span><span class="day-sub">EXAM: Software Engineering, 12:30–3:00pm &middot; last one</span></div>
-      <div class="row"><div class="t">Morning</div><span class="pill psw">Software</span><div><div class="lbl">Calm final skim only, 25 min</div></div></div>
-      <div class="row"><div class="t">12:30–3:00pm</div><span class="pill pexam">EXAM</span><div><div class="lbl">Software Engineering</div></div></div>
-      <div class="row"><div class="t">From 3pm</div><span class="pill pb">Done</span><div><div class="lbl">Trials complete. Full rest — you've earned it.</div></div></div>
-    </div>
-  </div>
-
-  <!-- ================= FREQUENCY CHECK ================= -->
-  <div id="check" class="sched-panel">
-    <div class="sec">Does Holiday Wk1 actually hit your targets?</div>
-    <table class="freq-check-table">
-      <tr><th>Subject</th><th>Target</th><th>Holiday Wk1 actual</th><th>Back-at-school actual</th></tr>
-      <tr><td>Physics</td><td>7×/week</td><td>7× (every day)</td><td>7× (every day, shorter sessions)</td></tr>
-      <tr><td>English</td><td>6×/week</td><td>6× (off Sunday)</td><td>~5× (was ~4×, bumped — four texts to hold in memory before its exam lands first, 3–4 Aug)</td></tr>
-      <tr><td>Maths</td><td>5×/week</td><td>5×</td><td>~2–3× (compressed)</td></tr>
-      <tr><td>Software Eng</td><td>5×/week</td><td>5×</td><td>~2× (compressed further — traded a weeknight to English, its own exam is last on 18 Aug with a dedicated push week)</td></tr>
-      <tr><td>Enterprise</td><td>5×/week</td><td>5×</td><td>~2× (compressed)</td></tr>
-      <tr><td>Engineering</td><td>3–4×/week</td><td>4×</td><td>~2× (compressed)</td></tr>
-    </table>
     <div class="tip tip-amber">
-      The holiday weeks hit your exact targets — that's where the real ground gets made up. Once school's back, weeknights physically only fit ~2 sessions, so the totals drop across the board; Physics is the one subject that still gets touched every single day because it's the biggest exam and the furthest from where it needs to be. The compressed weeks aren't a downgrade in priority, just a downgrade in available hours — the weekend sessions inside them are full timed papers, which is where most of the actual improvement happens anyway.
+      <b>Holiday vs term-time:</b> the frequencies below (Physics 7×, English 6×, Maths 5×, Software 5×, Enterprise 5×,
+      Engineering 3–4× per week) are fully hit during the holidays, where you've got 7–9 hrs/day. Once school's back on
+      21 July, a 2.5–3 hr weeknight physically can't carry that many sessions — the "Back at School" tab shows the
+      realistic compressed version, same priority order, weekends doing the heavy lifting to close the gap.
     </div>
+
+    <div class="freq-bar">
+      <div class="freq-item">
+        <div class="freq-dot" style="background:#8b3520"></div> Physics: 7×/week
+      </div>
+      <div class="freq-item">
+        <div class="freq-dot" style="background:#6b2039"></div> English: 6×/week
+      </div>
+      <div class="freq-item">
+        <div class="freq-dot" style="background:#235209"></div> Maths: 5×/week
+      </div>
+      <div class="freq-item">
+        <div class="freq-dot" style="background:#352f85"></div> Software: 5×/week
+      </div>
+      <div class="freq-item">
+        <div class="freq-dot" style="background:#074d3e"></div> Enterprise: 5×/week
+      </div>
+      <div class="freq-item">
+        <div class="freq-dot" style="background:#5c3506"></div> Engineering: 3–4×/week
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab sched-tab active" data-panel="hw1" onclick="showSched('hw1')">Holiday Wk1</button>
+      <button class="tab sched-tab" data-panel="hw2" onclick="showSched('hw2')">Holiday Wk2</button>
+      <button class="tab sched-tab" data-panel="school" onclick="showSched('school')">Back at School</button>
+      <button class="tab sched-tab" data-panel="exam1" onclick="showSched('exam1')">Exam Wk1</button>
+      <button class="tab sched-tab" data-panel="engpush" onclick="showSched('engpush')">Eng Studies Push</button>
+      <button class="tab sched-tab" data-panel="finalpush" onclick="showSched('finalpush')">Final Push</button>
+      <button class="tab sched-tab" data-panel="check" onclick="showSched('check')">Frequency Check</button>
+    </div>
+
+    <!-- ================= HOLIDAY WEEK 1 ================= -->
+    <div id="hw1" class="sched-panel active">
+      <div class="sec">Sun 5 – Sat 11 July &middot; 7–9 hrs/day &middot; goal: close the 3 named gaps before school's
+        back</div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Sunday 5 July</span><span class="day-sub">4 sessions &middot; ~6
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Review classwork/notes on Structure of the Atom (8.2) and Quantum Mechanical Nature of the
+              Atom (8.3) — both examinable and already taught. Practice Paper 1 was released today; you're sitting it
+              Thursday, so this is prep</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45am–12:15pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Networks & critical path analysis — mixed practice set</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–2:45pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture: authentication & encryption fundamentals — start from the
+              basics, this is where Task 2 fell to 50% even open-book</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:00–4:30pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Data science content review — you're already at the class median here, this is maintenance
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:30pm onward</div><span class="pill pb">Free / rest</span>
+          <div>
+            <div class="lbl">Properly switch off — Sunday nights matter for the week ahead</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Monday 6 July</span><span class="day-sub">5 sessions &middot; ~7.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Nature of Light: wave-particle duality + the photoelectric effect — your furthest-behind
+              module (37.5% vs a class average of 54%)</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45am–12:15pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Human Experiences: unseen-text technique — practice reading + answering under time pressure
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–2:45pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Personal & Public Transport — rebuild from scratch, starting with vehicle systems
+              fundamentals. This is your single biggest fixable gap in any subject (29% vs a class average of 51%)</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:00–4:00pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Bivariate data analysis — practice set</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:15–5:15pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Data visualisation — content review</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Tuesday 7 July</span><span class="day-sub">4 sessions &middot; ~6.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Nature of Light: Bohr model + atomic emission spectra, then special relativity — time
+              dilation, length contraction, mass-energy equivalence</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45am–12:15pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Human Experiences: sustained response to your prescribed text — full practice paragraph
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–2:45pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture: threat modelling & secure design principles</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:00–4:00pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Intelligent systems — content review</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Wednesday 8 July</span><span class="day-sub">4 sessions &middot; ~7
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Electromagnetism: motors — torque, force on current-carrying conductors. Your class
+              averaged only 33% here, so this is a hard topic for almost everyone, but you're still under even that
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45am–12:15pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Module A (Language, Identity & Culture) — essay practice</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–2:45pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Annuities & loan repayments — practice set</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:00–4:30pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Aeronautical Engineering — diagnostic pass. This module hasn't shown up in any task yet, so
+              find out what you actually know before it becomes a surprise gap alongside Personal & Public Transport
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Thursday 9 July</span><span class="day-sub">4 sessions &middot; ~7.5
+            hrs &middot; Practice Paper 1 day</span></div>
+        <div class="row">
+          <div class="t">9:00am–12:05pm</div><span class="pill pexam">Practice Paper</span>
+          <div>
+            <div class="lbl">Physics Practice Paper 1 (released Sunday) — full exam conditions, 3 hrs + 5 min reading,
+              exactly like the real trial</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:00–2:30pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Module B (Close Study of Literature) — essay practice</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:45–4:15pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Data security — safe collection, use and storage of data (SE-12-04), the second half of the
+              Secure Architecture gap</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:30–5:30pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Enterprise project / project management — content review, the 4th and final content area
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Friday 10 July</span><span class="day-sub">6 sessions &middot; ~8
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Electromagnetism: generators — magnetic flux, Faraday's & Lenz's laws</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45–11:15am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Mark yesterday's Practice Paper 1 against the criteria and log every mistake — don't redo
+              yet, that's tomorrow, per your teacher's "short period of time" advice</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">11:30am–1:00pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Module C (Craft of Writing) — creative / discursive practice</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:00–3:30pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Non-right-angle trigonometry — practice set</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:45–5:15pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Programming methodologies / SDLC (SE-12-01) — this was the stronger Task 1 area, keep it
+              that way</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">5:30–6:30pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Personal & Public Transport — practice questions, full past-paper-style responses</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Saturday 11 July</span><span class="day-sub">6 sessions &middot; ~8.5
+            hrs &middot; biggest day of the week</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Advanced Mechanics: circular motion + banked tracks (already your best of the three modules
+              tested). Then redo every Practice Paper 1 question you didn't get 100% on — properly, not just reading the
+              answer</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45am–12:15pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Full timed Paper 1 practice (1h40 incl. reading) + mark against the criteria yourself first
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–2:15pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Non-linear relationships — practice set</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:30–4:00pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture — first full past/sample paper attempt, untimed, see where
+              marks actually go</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:15–5:15pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Full familiarisation exam, untimed first pass</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">5:30–6:30pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Diagram & drawing-convention practice — applies across all 4 modules, easy marks that get
+              missed on presentation alone</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= HOLIDAY WEEK 2 ================= -->
+    <div id="hw2" class="sched-panel">
+      <div class="sec">Sun 12 – Sat 18 July &middot; same rhythm, shift from content → timed papers</div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Sunday 12 July</span><span class="day-sub">4 sessions &middot; ~6
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Structure of the Atom (8.2): Rutherford scattering, Bohr model postulates & limitations —
+              examinable and already taught. Also finish off Advanced Mechanics: projectile motion + gravitational
+              fields, orbits, Kepler's laws. Properties of the Nucleus (8.4) isn't taught until weeks 1–2 of next term,
+              so there's genuinely nothing to revise there yet</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:45am–12:15pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Normal distribution — practice set</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–2:45pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture — redo Saturday's paper questions you got wrong, properly this
+              time</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:00–4:30pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Mark last week's familiarisation exam against the guidelines, log every mistake</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:30pm onward</div><span class="pill pb">Free / rest</span>
+          <div></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Monday 13 July</span><span class="day-sub">5 sessions &middot; ~7.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–10:40am</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">FULL TIMED Paper 1 (1h40 incl. reading) + mark against the criteria</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">10:55am–1:00pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">FULL TIMED Paper 2 (2h05 incl. reading) + mark against the criteria</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:00–3:30pm</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Nature of Light: build a full error log from last week's sessions, redo every question you
+              got wrong</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:45–4:45pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Personal & Public Transport — mop-up, lighter task after a heavy English day</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">5:00–6:00pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Light practice set</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Tuesday 14 July</span><span class="day-sub">4 sessions &middot; ~7.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00am–12:05pm</div><span class="pill pexam">Practice Paper</span>
+          <div>
+            <div class="lbl">Physics Practice Paper 2 (released this week) — full exam conditions, 3 hrs + 5 min reading
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:00–2:30pm</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Mark against the criteria and log every mistake — Light and Electromagnetism first. Redo
+              them properly in a day or two, not right now</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:45–4:15pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Cross-text session, not one at a time: pull your strongest quotes for Human Experiences,
+              Module A and Module B into one running bank, plus your go-to techniques list for Module C — all four in
+              the same sitting</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:30–5:30pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture — remaining outcomes practice</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Wednesday 15 July</span><span class="day-sub">4 sessions &middot; ~7
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–12:30pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">FULL TIMED paper (2h40 incl. reading) + review</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:30–3:00pm</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Electromagnetism: transformers, AC/DC, back-EMF — last of the core Electromagnetism content
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:15–4:15pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Light review — you're stable here, this is upkeep</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:30–5:30pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Aeronautical Engineering: core principles of flight — second pass since the diagnostic
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Thursday 16 July</span><span class="day-sub">3 sessions &middot; ~7.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00am–12:05pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">FULL TIMED paper #2 (3h5 incl. reading), all 4 modules — check whether Personal & Public
+              Transport has actually moved since the diagnostic</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:00–2:30pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Thorough review against marking guidelines</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:45–4:45pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Full familiarisation exam #2, untimed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Friday 17 July</span><span class="day-sub">4 sessions &middot; ~7
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–12:30pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">FULL TIMED familiarisation/past exam — Secure Software Architecture questions especially +
+              review</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:30–3:00pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Rapid-fire recall: one paragraph each on Human Experiences, Module A and Module B back to
+              back, no notes — whichever one you stumble on is your real weak point, not whichever "feels" weakest</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:15–4:15pm</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Error-log review, Tuesday's paper</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:30–5:15pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Simultaneous equations — practice set</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Saturday 18 July</span><span class="day-sub">6 sessions &middot; ~9
+            hrs &middot; Practice Paper 3 day</span></div>
+        <div class="row">
+          <div class="t">9:00am–12:05pm</div><span class="pill pexam">Practice Paper</span>
+          <div>
+            <div class="lbl">Physics Practice Paper 3 (the final one, released this week) — full exam conditions, 3 hrs
+              + 5 min reading. By now you've covered all of Modules 5–7 plus 8.2/8.3 — this is your best diagnostic yet
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:00–2:00pm</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Mark against the criteria, log every mistake. Redo comes tomorrow, after a short gap</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:15–3:00pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Content review — whichever of the 4 areas needs it most</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:15–4:00pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Personal & Public Transport — final drilling for this block + diagram convention practice
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:15–5:00pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Programming code structures — selection, iteration (SE-12-02)</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">5:15–6:00pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Timed practice paragraph — whichever of the three prescribed texts got the least airtime
+              this week</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Sun 19 & Mon 20 July — tail of the break</span><span
+            class="day-sub">light, deliberately</span></div>
+        <div class="row">
+          <div class="t">Sun 19 Jul</div><span class="pill pb">Light</span>
+          <div>
+            <div class="lbl">Redo every Practice Paper 3 question you didn't get 100% on, then skim
+              quick-reference/formula sheets for all 6 subjects, tidy notes, review every error log. Rest properly this
+              afternoon.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Mon 20 Jul</div><span class="pill pb">Light</span>
+          <div>
+            <div class="lbl">Pupil-free day for most schools — pack your bag, one quick pass over anything still shaky,
+              early night before school's back.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= BACK AT SCHOOL ================= -->
+    <div id="school" class="sched-panel">
+      <div class="sec">Repeats for both Tue 21 – Sun 26 Jul and Mon 27 Jul – Sun 2 Aug &middot; ~2.5–3 hrs on school
+        nights, 5–6 hrs on weekends &middot; second time through, weekend sessions become full timed papers for
+        English/Physics/Maths since their exams are the first week of trials</div>
+      <div class="tip tip-amber" style="margin-bottom:1rem">
+        <b>Properties of the Nucleus (8.4)</b> gets taught in class during weeks 1–2 of this term (roughly 21–31 July) —
+        the one piece of trial content you haven't seen yet. As soon as it's covered in class, swap one Physics
+        weeknight slot below for it (decay equations, half-life, mass defect, binding energy, fission/fusion) before it
+        disappears into the trial untouched.
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Weeknight template &middot; Mon–Fri</span><span class="day-sub">2
+            sessions each &middot; ~2.5 hrs</span></div>
+        <div class="row">
+          <div class="t">School day</div><span class="pill ps">School</span>
+          <div>
+            <div class="lbl">Home ~3:30–4pm, proper break before starting</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Mon eve</div><span class="pill pp">Physics</span> <span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Physics: Light/Electromagnetism error-log redo &middot; English: Human Experiences</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Tue eve</div><span class="pill pp">Physics</span> <span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Physics: targeted weak-topic practice &middot; Maths: targeted weak-topic practice</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Wed eve</div><span class="pill pp">Physics</span> <span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Physics: continued &middot; English: Module A — don't let three days pass without touching
+              a prescribed text</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Thu eve</div><span class="pill pp">Physics</span> <span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Physics: continued &middot; Enterprise: whichever of the 4 areas is due for a pass</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Fri eve</div><span class="pill pp">Physics</span> <span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Physics: continued &middot; English: Module B, then a quick 10-min quote refresh on Module
+              C</div>
+          </div>
+        </div>
+        <div class="row-note" style="padding:8px 14px 12px">Devices off ~9:15pm, sleep by 10pm — sleep before an exam
+          period matters more than one extra rep.</div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Saturday</span><span class="day-sub">5 sessions &middot; ~5.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–11:30am</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">FULL TIMED paper, weighted toward Light + Electromagnetism, lighter on Mechanics + review
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">12:00–1:30pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Timed full response, rotate to whichever prescribed text got the least attention this week,
+              incorporate any teacher feedback received</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:00–3:00pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture — timed section</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:15–4:00pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Content review</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:15–5:00pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Personal & Public Transport final polish, or Aeronautical Engineering second pass</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Sunday</span><span class="day-sub">5 sessions &middot; ~5.5
+            hrs</span></div>
+        <div class="row">
+          <div class="t">9:00–12:00pm</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">FULL TIMED paper + review</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">12:45–1:45pm</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Review every mistake from Saturday's paper, one by one, before moving on</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:00–2:45pm</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Cross-text quote drill — rapid recall across all three prescribed texts plus Module C
+              techniques, no notes</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">3:00–3:45pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">MC drilling + diagram practice, all 4 modules</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">4:00–4:45pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Whichever content area is weakest right now</div>
+          </div>
+        </div>
+        <div class="row-note" style="padding:8px 14px 12px">No study Sunday evening — full rest before Monday.</div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Second time through (27 Jul – 2 Aug): what changes</span><span
+            class="day-sub">same template, escalating stakes</span></div>
+        <div class="row">
+          <div class="t">All week</div><span class="pill pb">Note</span>
+          <div>
+            <div class="lbl">Same weeknight/weekend pattern above, with one change: English goes daily this week, not
+              just Mon/Wed/Fri/Sat/Sun — it's your first exam (3–4 Aug) and you're carrying four texts, so every day
+              gets at least 20–30 min of cross-text quote recall even on nights Physics or Maths takes the main slot.
+              Every Physics/English/Maths session becomes a full timed paper under real exam conditions.
+              Software/Enterprise/Engineering stay on content + targeted practice — their exams aren't until the
+              13th–18th.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Sun 2 Aug</div><span class="pill pb">Final prep</span>
+          <div>
+            <div class="lbl">Confidence-only review for English/Physics/Maths — formula sheets (Light + Electromagnetism
+              traps specifically), quote banks, quick skims. No new content. Pack bags, early night.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= EXAM WEEK 1 ================= -->
+    <div id="exam1" class="sched-panel">
+      <div class="sec">Mon 3 – Fri 7 August &middot; English, Physics & Maths &middot; manage energy, don't cram</div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Monday 3 August</span><span class="day-sub">EXAM: English Paper 1,
+            8:20–10:00am</span></div>
+        <div class="row">
+          <div class="t">8:20–10:00am</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">English Paper 1</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill pe">English</span>
+          <div>
+            <div class="lbl">Quick, calm review of Module A/B/C key points for tomorrow's Paper 2 — no cramming, 1 hr
+              max</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Tuesday 4 August</span><span class="day-sub">EXAM: English Paper 2,
+            8:20–10:25am</span></div>
+        <div class="row">
+          <div class="t">8:20–10:25am</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">English Paper 2</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Rest of day</div><span class="pill pb">Rest</span>
+          <div>
+            <div class="lbl">English trials are done — properly rest</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Light formula-sheet skim only, 45 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Wednesday 5 August</span><span class="day-sub">gap day &middot; only
+            free full day before Thu/Fri</span></div>
+        <div class="row">
+          <div class="t">Morning</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Final targeted review — Nature of Light and Electromagnetism, your two below-average
+              modules, 2 hrs</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Afternoon</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Final targeted review of weak spots before Friday, 2 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Thursday 6 August</span><span class="day-sub">EXAM: Physics,
+            12:30–3:35pm</span></div>
+        <div class="row">
+          <div class="t">Morning</div><span class="pill pp">Physics</span>
+          <div>
+            <div class="lbl">Calm skim of formula sheet + common traps only, 45 min — exam is early afternoon, don't
+              overdo it</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">12:30–3:35pm</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">Physics</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Light formula-sheet skim only, 45 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Friday 7 August</span><span class="day-sub">EXAM: Mathematics
+            Standard 2, 12:30–3:10pm</span></div>
+        <div class="row">
+          <div class="t">Morning</div><span class="pill pm">Maths</span>
+          <div>
+            <div class="lbl">Calm final skim only, 30 min</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">12:30–3:10pm</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">Mathematics Standard 2</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill pb">Rest</span>
+          <div>
+            <div class="lbl">Week one done — English, Physics and Maths all sat. Properly rest tonight, you've earned
+              it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= ENGINEERING STUDIES PUSH ================= -->
+    <div id="engpush" class="sched-panel">
+      <div class="sec">Sat 8 – Thu 13 August &middot; a dedicated 6-day runway for your single biggest fixable gap</div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Saturday 8 August</span><span class="day-sub">recovery +
+            restart</span></div>
+        <div class="row">
+          <div class="t">Morning</div><span class="pill pb">Rest</span>
+          <div>
+            <div class="lbl">Sleep in, no guilt — you've just sat three exams in five days</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Afternoon</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Review all 4 modules using your error logs from July's timed papers — Personal & Public
+              Transport gets the most time, Aeronautical gets a final check since it's still your newest module, 3 hrs
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Sunday 9 August</span><span class="day-sub">full rehearsal</span>
+        </div>
+        <div class="row">
+          <div class="t">9:00am–12:05pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">FULL TIMED final paper, all 4 modules, under real exam conditions</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:00–2:30pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Thorough review against marking guidelines</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">2:45–3:45pm</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Diagram/drawing-convention drilling</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Monday 10 August</span><span class="day-sub">school night</span>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Personal & Public Transport — final targeted practice, 2.5 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Tuesday 11 August</span><span class="day-sub">school night</span>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Aeronautical Engineering + Telecommunications — multiple-choice drilling, 2.5 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Wednesday 12 August</span><span class="day-sub">night before &middot;
+            no new content</span></div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Light final review only — quick-reference sheets, MC practice. No new content. Early night,
+              ~1.5 hrs max.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Thursday 13 August</span><span class="day-sub">EXAM: Engineering
+            Studies, 8:20–11:25am</span></div>
+        <div class="row">
+          <div class="t">Morning</div><span class="pill peng">Engineering</span>
+          <div>
+            <div class="lbl">Calm 15–20 min skim of notes only before heading in</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">8:20–11:25am</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">Engineering Studies</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Rest of day</div><span class="pill pb">Rest</span>
+          <div>
+            <div class="lbl">Your biggest fix of the whole fortnight is done — properly rest this afternoon</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Evening (optional)</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Light Secure Software Architecture warm-up, only if you've genuinely got energy for it
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= FINAL PUSH ================= -->
+    <div id="finalpush" class="sched-panel">
+      <div class="sec">Fri 14 – Tue 18 August &middot; Enterprise Computing & Software Engineering, back to back, then
+        done</div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Friday 14 August</span><span class="day-sub">school night</span>
+        </div>
+        <div class="row">
+          <div class="t">Evening</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Full content review across all 4 areas — data science, data visualisation, intelligent
+              systems, enterprise project — weakest first, 2.5 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Saturday 15 August</span><span class="day-sub">two full papers</span>
+        </div>
+        <div class="row">
+          <div class="t">9:00–11:20am</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">FULL TIMED final paper — Secure Software Architecture questions especially</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">11:35am–12:35pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Detailed review</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:30–3:30pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Familiarisation exam, untimed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-hd"><span class="day-name">Sunday 16 August</span><span class="day-sub">final rehearsal</span>
+        </div>
+        <div class="row">
+          <div class="t">9:00–11:00am</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">FULL TIMED final paper</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">11:15am–12:15pm</div><span class="pill pent">Enterprise</span>
+          <div>
+            <div class="lbl">Review</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">1:15–3:15pm</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture — final drilling on everything that's still shaky</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Monday 17 August</span><span class="day-sub">EXAM: Enterprise
+            Computing, 8:20–10:50am</span></div>
+        <div class="row">
+          <div class="t">8:20–10:50am</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">Enterprise Computing</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">Afternoon</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Secure Software Architecture final review only — one subject left, 1.5 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day exam-day">
+        <div class="day-hd"><span class="day-name">Tuesday 18 August</span><span class="day-sub">EXAM: Software
+            Engineering, 12:30–3:00pm &middot; last one</span></div>
+        <div class="row">
+          <div class="t">Morning</div><span class="pill psw">Software</span>
+          <div>
+            <div class="lbl">Calm final skim only, 25 min</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">12:30–3:00pm</div><span class="pill pexam">EXAM</span>
+          <div>
+            <div class="lbl">Software Engineering</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t">From 3pm</div><span class="pill pb">Done</span>
+          <div>
+            <div class="lbl">Trials complete. Full rest — you've earned it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= FREQUENCY CHECK ================= -->
+    <div id="check" class="sched-panel">
+      <div class="sec">Does Holiday Wk1 actually hit your targets?</div>
+      <table class="freq-check-table">
+        <tr>
+          <th>Subject</th>
+          <th>Target</th>
+          <th>Holiday Wk1 actual</th>
+          <th>Back-at-school actual</th>
+        </tr>
+        <tr>
+          <td>Physics</td>
+          <td>7×/week</td>
+          <td>7× (every day)</td>
+          <td>7× (every day, shorter sessions)</td>
+        </tr>
+        <tr>
+          <td>English</td>
+          <td>6×/week</td>
+          <td>6× (off Sunday)</td>
+          <td>~5× (was ~4×, bumped — four texts to hold in memory before its exam lands first, 3–4 Aug)</td>
+        </tr>
+        <tr>
+          <td>Maths</td>
+          <td>5×/week</td>
+          <td>5×</td>
+          <td>~2–3× (compressed)</td>
+        </tr>
+        <tr>
+          <td>Software Eng</td>
+          <td>5×/week</td>
+          <td>5×</td>
+          <td>~2× (compressed further — traded a weeknight to English, its own exam is last on 18 Aug with a dedicated
+            push week)</td>
+        </tr>
+        <tr>
+          <td>Enterprise</td>
+          <td>5×/week</td>
+          <td>5×</td>
+          <td>~2× (compressed)</td>
+        </tr>
+        <tr>
+          <td>Engineering</td>
+          <td>3–4×/week</td>
+          <td>4×</td>
+          <td>~2× (compressed)</td>
+        </tr>
+      </table>
+      <div class="tip tip-amber">
+        The holiday weeks hit your exact targets — that's where the real ground gets made up. Once school's back,
+        weeknights physically only fit ~2 sessions, so the totals drop across the board; Physics is the one subject that
+        still gets touched every single day because it's the biggest exam and the furthest from where it needs to be.
+        The compressed weeks aren't a downgrade in priority, just a downgrade in available hours — the weekend sessions
+        inside them are full timed papers, which is where most of the actual improvement happens anyway.
+      </div>
+    </div>
+
+    <script>
+      function showSched(id) {
+        document.querySelectorAll('.sched-panel').forEach(p => p.classList.toggle('active', p.id === id));
+        document.querySelectorAll('.sched-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-panel') === id));
+      }
+    </script>
+
   </div>
-
-<script>
-  function showSched(id) {
-    document.querySelectorAll('.sched-panel').forEach(p => p.classList.toggle('active', p.id === id));
-    document.querySelectorAll('.sched-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-panel') === id));
-  }
-</script>
-
-</div>
 </body>
+
 </html>
