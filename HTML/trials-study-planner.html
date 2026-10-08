@@ -1,0 +1,592 @@
+<div id="app-root">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    #app-root {
+      --bg: #F7F5F0;
+      --ink: #1C1B19;
+      --muted: #8A8578;
+      --card: #FFFFFF;
+      --border: #E5E1D8;
+      --accent: #2D5C4E;
+      --accent-light: #E3ECE8;
+      --exam: #C1442D;
+      --exam-light: #F6E3DD;
+      --light: #5E7180;
+      --light-bg: #EAEEF1;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      padding: 0;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.45;
+    }
+
+    #app-root * {
+      box-sizing: border-box;
+    }
+
+    #app-root .mono {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    #app-root h1,
+    #app-root h2,
+    #app-root h3 {
+      font-family: 'Fraunces', serif;
+      margin: 0;
+    }
+
+    #app-root .hero {
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #app-root .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #C7C2B4;
+      margin-bottom: 10px;
+    }
+
+    #app-root .hero-main {
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    #app-root .hero-main .num {
+      font-family: 'Fraunces', serif;
+      font-size: 44px;
+      font-weight: 700;
+      color: #E8C77E;
+    }
+
+    #app-root .hero-sub {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #C7C2B4;
+    }
+
+    #app-root .hero.exam-today {
+      background: var(--exam);
+    }
+
+    #app-root .hero.exam-today .hero-main .num {
+      color: #FFF3EC;
+    }
+
+    #app-root .hero.done {
+      background: var(--accent);
+    }
+
+    #app-root .progress-wrap {
+      margin: 0 16px 8px;
+      padding: 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    #app-root .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    #app-root .progress-top strong {
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    #app-root .bar-track {
+      height: 8px;
+      background: var(--light-bg);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    #app-root .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    #app-root .reset-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #app-root .reset-btn:hover {
+      background: var(--light-bg);
+    }
+
+    #app-root .assumptions {
+      margin: 12px 16px 8px;
+      font-size: 12.5px;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-left: 3px solid var(--border);
+    }
+
+    #app-root .timeline {
+      padding: 8px 16px 40px;
+      position: relative;
+    }
+
+    #app-root .phase-header {
+      margin: 34px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    #app-root .phase-header:first-child {
+      margin-top: 10px;
+    }
+
+    #app-root .phase-name {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    #app-root .phase-range {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    #app-root .phase-goal {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      max-width: 560px;
+    }
+
+    #app-root .day-row {
+      display: flex;
+      gap: 12px;
+      position: relative;
+    }
+
+    #app-root .spine-col {
+      width: 20px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #app-root .spine-line {
+      width: 2px;
+      flex: 1;
+      background: var(--border);
+    }
+
+    #app-root .node {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    #app-root .node.complete {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    #app-root .node.exam-node {
+      border-radius: 3px;
+      transform: rotate(45deg);
+      background: var(--exam);
+      border-color: var(--exam);
+      width: 11px;
+      height: 11px;
+    }
+
+    #app-root .node.today-node {
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    #app-root .day-card {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    #app-root .day-card.light-day {
+      background: var(--light-bg);
+      border-color: var(--light-bg);
+    }
+
+    #app-root .day-card.exam-day {
+      background: var(--exam-light);
+      border-color: #E7BBAC;
+    }
+
+    #app-root .day-card.is-today {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #app-root .day-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    #app-root .day-date {
+      font-weight: 600;
+      font-size: 14.5px;
+    }
+
+    #app-root .day-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--light-bg);
+      color: var(--light);
+    }
+
+    #app-root .day-tag.exam-tag {
+      background: var(--exam);
+      color: #fff;
+    }
+
+    #app-root .exam-banner {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--exam);
+      margin-bottom: 8px;
+    }
+
+    #app-root .exam-banner .mono {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    #app-root .session {
+      display: flex;
+      gap: 10px;
+      padding: 7px 0;
+      border-top: 1px solid var(--border);
+      font-size: 13.5px;
+    }
+
+    #app-root .session:first-of-type {
+      border-top: none;
+    }
+
+    #app-root .session input[type="checkbox"] {
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    #app-root .session-body {
+      flex: 1;
+    }
+
+    #app-root .session-subject {
+      font-weight: 600;
+      font-size: 12.5px;
+      color: var(--accent);
+    }
+
+    #app-root .session.checked .session-subject,
+    #app-root .session.checked .session-task {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+
+    #app-root .session-task {
+      color: var(--ink);
+    }
+
+    #app-root .session-mins {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    #app-root .session.no-check .session-body {
+      padding-left: 26px;
+    }
+
+    #app-root .session.no-check {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    #app-root :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #app-root .bar-fill {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #app-root .hero-main {
+        font-size: 21px;
+      }
+
+      #app-root .hero-main .num {
+        font-size: 34px;
+      }
+
+      #app-root .spine-col {
+        width: 14px;
+      }
+    }
+  </style>
+
+  <div class="hero" id="hero">
+    <div class="hero-eyebrow">Trials lock-in \u2014 4 Jul \u2192 18 Aug 2026</div>
+    <div class="hero-main" id="heroMain">Loading\u2026</div>
+    <div class="hero-sub" id="heroSub"></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span>Overall progress</span>
+      <strong id="progressLabel">0 / 0 sessions</strong>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" id="barFill" style="width:0%"></div>
+    </div>
+    <button class="reset-btn" id="resetBtn">Reset all ticks</button>
+  </div>
+
+  <div class="assumptions">
+    Assumes ~7\u20139 hrs/day in the holidays, and once term\u2019s back on, ~2.5\u20133 hrs on school nights and
+    5\u20136 hrs on weekends. Shift times to suit you \u2014 the order and pairing of subjects is the part worth
+    keeping.
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<script>
+  (function () {
+    const EXAMS = [{ "subject": "English Paper 1", "date": "2026-08-03", "start": "8:20am", "end": "10:00am" }, { "subject": "English Paper 2", "date": "2026-08-04", "start": "8:20am", "end": "10:25am" }, { "subject": "Physics", "date": "2026-08-06", "start": "12:30pm", "end": "3:35pm" }, { "subject": "Mathematics Standard 2", "date": "2026-08-07", "start": "12:30pm", "end": "3:10pm" }, { "subject": "Engineering Studies", "date": "2026-08-13", "start": "8:20am", "end": "11:25am" }, { "subject": "Enterprise Computing", "date": "2026-08-17", "start": "8:20am", "end": "10:50am" }, { "subject": "Software Engineering", "date": "2026-08-18", "start": "12:30pm", "end": "3:00pm" }];
+    const PHASES = [{ "name": "Foundation & Triage", "range": "Sat 4 – Mon 20 Jul", "goal": "Holiday block. Diagnose exactly what’s weak in Engineering Studies & Software Engineering, rebuild content everywhere, keep Maths sharp." }, { "name": "Final Approach — Back at School", "range": "Tue 21 Jul – Sun 2 Aug", "goal": "Push English, Physics & Maths to exam-ready with timed papers, while still feeding Eng Studies / Software Eng / Enterprise Computing." }, { "name": "Exam Week One", "range": "Mon 3 – Fri 7 Aug", "goal": "Sit English, Physics & Maths. Manage energy — recover after each paper, prep light for the next." }, { "name": "The Engineering Studies Push", "range": "Sat 8 – Thu 13 Aug", "goal": "Your most critical subject gets a dedicated runway. Consolidate, drill diagrams, sit it." }, { "name": "The Final Push — Enterprise Computing & Software Engineering", "range": "Fri 14 – Tue 18 Aug", "goal": "Last two subjects, back to back. Finish strong." }];
+    const DAYS = [{ "date": "2026-07-04", "dayLabel": "Sat 4 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Planning", "task": "Diagnostic: pull any past Engineering Studies + Software Engineering tests/feedback, rank modules/outcomes weakest → strongest", "mins": 45 }, { "subject": "Engineering Studies", "task": "Deep dive on your weakest module — rebuild content + practice questions", "mins": 150 }, { "subject": "Mathematics Standard 2", "task": "Mixed-topic practice set to stay sharp", "mins": 90 }, { "subject": "Software Engineering", "task": "First pass on your weakest outcome area", "mins": 120 }] }, { "date": "2026-07-05", "dayLabel": "Sun 5 Jul", "phase": 0, "tag": "light", "sessions": [{ "subject": "Active recall", "task": "Quick self-quiz/flashcards on everything from yesterday — then stop. Real rest for the rest of the day.", "mins": 90 }] }, { "date": "2026-07-06", "dayLabel": "Mon 6 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "English", "task": "Human Experiences: unseen-text technique + prescribed text sustained response practice", "mins": 150 }, { "subject": "Physics", "task": "Advanced Mechanics: circular motion, gravity, projectile motion — content + questions", "mins": 150 }, { "subject": "Engineering Studies", "task": "2nd weakest module", "mins": 120 }] }, { "date": "2026-07-07", "dayLabel": "Tue 7 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Software Engineering", "task": "2nd weakest outcome area", "mins": 150 }, { "subject": "Enterprise Computing", "task": "Data science + data visualisation content", "mins": 150 }, { "subject": "Mathematics Standard 2", "task": "Practice set — different topics to yesterday", "mins": 90 }] }, { "date": "2026-07-08", "dayLabel": "Wed 8 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Physics", "task": "Electromagnetism content + practice questions", "mins": 150 }, { "subject": "English", "task": "Module A (Language, Identity & Culture) — essay practice", "mins": 150 }, { "subject": "Engineering Studies", "task": "3rd module", "mins": 120 }] }, { "date": "2026-07-09", "dayLabel": "Thu 9 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "4th module + diagram/drawing convention practice specifically", "mins": 150 }, { "subject": "Software Engineering", "task": "3rd weakest outcome area", "mins": 150 }, { "subject": "Physics", "task": "Quick Year 11 refresh — whichever topics feel rustiest", "mins": 90 }] }, { "date": "2026-07-10", "dayLabel": "Fri 10 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "English", "task": "Module B (Close Study of Literature) — essay practice", "mins": 120 }, { "subject": "Enterprise Computing", "task": "Intelligent systems + enterprise project/project management", "mins": 150 }, { "subject": "Mathematics Standard 2", "task": "Practice set", "mins": 90 }] }, { "date": "2026-07-11", "dayLabel": "Sat 11 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "Revisit weakest module + first full past paper attempt (untimed)", "mins": 150 }, { "subject": "Software Engineering", "task": "NESA familiarisation exam, untimed first pass", "mins": 120 }, { "subject": "English", "task": "Module C (Craft of Writing) — creative/discursive practice", "mins": 120 }] }, { "date": "2026-07-12", "dayLabel": "Sun 12 Jul", "phase": 0, "tag": "light", "sessions": [{ "subject": "Active recall", "task": "Self-quiz across everything from this week, then properly switch off", "mins": 90 }] }, { "date": "2026-07-13", "dayLabel": "Mon 13 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "English", "task": "FULL TIMED Paper 1 (1h40 incl. reading) + mark against criteria", "mins": 160 }, { "subject": "English", "task": "FULL TIMED Paper 2 (2h05 incl. reading) + mark against criteria", "mins": 185 }, { "subject": "Mathematics Standard 2", "task": "Light practice set", "mins": 60 }] }, { "date": "2026-07-14", "dayLabel": "Tue 14 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Physics", "task": "FULL TIMED paper (3h5 incl. reading) + detailed review against marking guidelines", "mins": 270 }, { "subject": "Engineering Studies", "task": "Weak-topic mop-up using today’s Physics review energy for a lighter task", "mins": 120 }] }, { "date": "2026-07-15", "dayLabel": "Wed 15 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Mathematics Standard 2", "task": "FULL TIMED paper (2h40 incl. reading) + review", "mins": 210 }, { "subject": "Software Engineering", "task": "4th / remaining weak outcome areas", "mins": 150 }, { "subject": "Enterprise Computing", "task": "Light review", "mins": 60 }] }, { "date": "2026-07-16", "dayLabel": "Thu 16 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "FULL TIMED paper #2 (3h5 incl. reading) + thorough review", "mins": 270 }, { "subject": "Enterprise Computing", "task": "Familiarisation exam, untimed", "mins": 120 }] }, { "date": "2026-07-17", "dayLabel": "Fri 17 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Software Engineering", "task": "FULL TIMED familiarisation/past exam + review", "mins": 210 }, { "subject": "English", "task": "Error-log review from timed papers + build a quote/evidence bank", "mins": 120 }, { "subject": "Physics", "task": "Error-log review from Tuesday’s paper", "mins": 90 }] }, { "date": "2026-07-18", "dayLabel": "Sat 18 Jul", "phase": 0, "tag": null, "sessions": [{ "subject": "Enterprise Computing", "task": "FULL TIMED familiarisation exam + review", "mins": 210 }, { "subject": "Engineering Studies", "task": "Diagram practice + redo weakest sub-topic", "mins": 150 }] }, { "date": "2026-07-19", "dayLabel": "Sun 19 Jul", "phase": 0, "tag": "light", "sessions": [{ "subject": "Consolidation", "task": "Skim quick-reference/formula sheets for all 6 subjects, tidy notes, review error logs", "mins": 90 }, { "subject": "Rest", "task": "Properly switch off this afternoon — school’s back tomorrow-ish", "mins": 0 }] }, { "date": "2026-07-20", "dayLabel": "Mon 20 Jul", "phase": 0, "tag": "light", "sessions": [{ "subject": "Transition", "task": "Pupil-free day for most schools. Quick review of anything still shaky, pack your bag, ease back into routine, early night.", "mins": 60 }] }, { "date": "2026-07-21", "dayLabel": "Tue 21 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "English", "task": "Redo timed Paper 1 — faster and sharper this time", "mins": 150 }] }, { "date": "2026-07-22", "dayLabel": "Wed 22 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Physics", "task": "Targeted practice on the weak topics your last error log flagged", "mins": 150 }] }, { "date": "2026-07-23", "dayLabel": "Thu 23 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Mathematics Standard 2", "task": "Targeted weak-topic practice + one timed section", "mins": 150 }] }, { "date": "2026-07-24", "dayLabel": "Fri 24 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "Continue weakest-module work", "mins": 120 }] }, { "date": "2026-07-25", "dayLabel": "Sat 25 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Software Engineering", "task": "FULL TIMED paper + review", "mins": 210 }, { "subject": "Engineering Studies", "task": "Weak-topic session", "mins": 120 }] }, { "date": "2026-07-26", "dayLabel": "Sun 26 Jul", "phase": 1, "tag": "light", "sessions": [{ "subject": "Enterprise Computing", "task": "FULL TIMED paper + review, then take the rest of the day off", "mins": 210 }] }, { "date": "2026-07-27", "dayLabel": "Mon 27 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "English", "task": "Module A/B/C essay redo — fold in any teacher feedback you’ve had back", "mins": 150 }] }, { "date": "2026-07-28", "dayLabel": "Tue 28 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Physics", "task": "FULL TIMED paper #3, focused on your weakest modules + review", "mins": 150 }] }, { "date": "2026-07-29", "dayLabel": "Wed 29 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Mathematics Standard 2", "task": "FULL TIMED paper #2 + review", "mins": 150 }] }, { "date": "2026-07-30", "dayLabel": "Thu 30 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Software Engineering / Enterprise Computing", "task": "Whichever feels weaker right now — focused practice", "mins": 120 }] }, { "date": "2026-07-31", "dayLabel": "Fri 31 Jul", "phase": 1, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "Multiple-choice drilling + diagram practice", "mins": 120 }] }, { "date": "2026-08-01", "dayLabel": "Sat 1 Aug", "phase": 1, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "FULL TIMED final rehearsal + thorough review", "mins": 270 }, { "subject": "Software Engineering / Enterprise Computing", "task": "Light top-up session", "mins": 90 }] }, { "date": "2026-08-02", "dayLabel": "Sun 2 Aug", "phase": 1, "tag": "gap", "sessions": [{ "subject": "English / Physics / Maths", "task": "Confidence-only review — formula sheets, quote banks, quick skims. No new content. Pack bags, early night.", "mins": 90 }] }, { "date": "2026-08-03", "dayLabel": "Mon 3 Aug", "phase": 2, "tag": "exam", "examInfo": { "subject": "English Paper 1", "start": "8:20am", "end": "10:00am" }, "sessions": [{ "subject": "English", "task": "Evening: quick, calm review of Module A/B/C key points for tomorrow — no cramming", "mins": 60 }] }, { "date": "2026-08-04", "dayLabel": "Tue 4 Aug", "phase": 2, "tag": "exam", "examInfo": { "subject": "English Paper 2", "start": "8:20am", "end": "10:25am" }, "sessions": [{ "subject": "Rest", "task": "English trials done — properly rest", "mins": 0 }, { "subject": "Physics", "task": "Evening: light formula-sheet skim only", "mins": 45 }] }, { "date": "2026-08-05", "dayLabel": "Wed 5 Aug", "phase": 2, "tag": "gap", "sessions": [{ "subject": "Physics", "task": "Final targeted review of weak spots before tomorrow", "mins": 120 }, { "subject": "Mathematics Standard 2", "task": "Final targeted review of weak spots before Friday", "mins": 120 }] }, { "date": "2026-08-06", "dayLabel": "Thu 6 Aug", "phase": 2, "tag": "exam", "examInfo": { "subject": "Physics", "start": "12:30pm", "end": "3:35pm" }, "sessions": [{ "subject": "Physics", "task": "Morning: calm skim of formula sheet + common traps only", "mins": 45 }, { "subject": "Mathematics Standard 2", "task": "Evening: light formula-sheet skim only", "mins": 45 }] }, { "date": "2026-08-07", "dayLabel": "Fri 7 Aug", "phase": 2, "tag": "exam", "examInfo": { "subject": "Mathematics Standard 2", "start": "12:30pm", "end": "3:10pm" }, "sessions": [{ "subject": "Mathematics Standard 2", "task": "Morning: calm final skim only", "mins": 30 }, { "subject": "Rest", "task": "Week one done — English, Physics and Maths all sat. Properly rest tonight.", "mins": 0 }] }, { "date": "2026-08-08", "dayLabel": "Sat 8 Aug", "phase": 3, "tag": null, "sessions": [{ "subject": "Rest", "task": "Sleep in, no guilt — you’ve just sat four exams", "mins": 0 }, { "subject": "Engineering Studies", "task": "Afternoon: review all 4 modules using your error logs — find the last weak spots", "mins": 180 }] }, { "date": "2026-08-09", "dayLabel": "Sun 9 Aug", "phase": 3, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "FULL TIMED final paper + thorough review against marking guidelines", "mins": 270 }, { "subject": "Engineering Studies", "task": "Diagram/drawing convention drilling", "mins": 60 }] }, { "date": "2026-08-10", "dayLabel": "Mon 10 Aug", "phase": 3, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "Weak-module targeted practice", "mins": 150 }] }, { "date": "2026-08-11", "dayLabel": "Tue 11 Aug", "phase": 3, "tag": null, "sessions": [{ "subject": "Engineering Studies", "task": "Weak-module practice + multiple-choice drilling", "mins": 150 }] }, { "date": "2026-08-12", "dayLabel": "Wed 12 Aug", "phase": 3, "tag": "gap", "sessions": [{ "subject": "Engineering Studies", "task": "Light final review only — quick-reference sheets, MC practice. No new content. Early night.", "mins": 100 }] }, { "date": "2026-08-13", "dayLabel": "Thu 13 Aug", "phase": 3, "tag": "exam", "examInfo": { "subject": "Engineering Studies", "start": "8:20am", "end": "11:25am" }, "sessions": [{ "subject": "Engineering Studies", "task": "Morning: calm 15–20 min skim of notes only", "mins": 20 }, { "subject": "Rest", "task": "Your most critical subject is done — properly rest this afternoon", "mins": 0 }, { "subject": "Software Engineering / Enterprise Computing", "task": "Optional light warm-up only if you’ve genuinely got energy for it", "mins": 60 }] }, { "date": "2026-08-14", "dayLabel": "Fri 14 Aug", "phase": 4, "tag": null, "sessions": [{ "subject": "Enterprise Computing", "task": "Full content review across all 4 areas, weakest first", "mins": 150 }] }, { "date": "2026-08-15", "dayLabel": "Sat 15 Aug", "phase": 4, "tag": null, "sessions": [{ "subject": "Software Engineering", "task": "FULL TIMED final paper + review", "mins": 240 }, { "subject": "Enterprise Computing", "task": "Familiarisation exam, untimed", "mins": 120 }] }, { "date": "2026-08-16", "dayLabel": "Sun 16 Aug", "phase": 4, "tag": null, "sessions": [{ "subject": "Enterprise Computing", "task": "FULL TIMED final paper + review", "mins": 210 }, { "subject": "Software Engineering", "task": "Weak-outcome final drilling", "mins": 120 }] }, { "date": "2026-08-17", "dayLabel": "Mon 17 Aug", "phase": 4, "tag": "exam", "examInfo": { "subject": "Enterprise Computing", "start": "8:20am", "end": "10:50am" }, "sessions": [{ "subject": "Software Engineering", "task": "Afternoon: light final review only, one subject left", "mins": 90 }] }, { "date": "2026-08-18", "dayLabel": "Tue 18 Aug", "phase": 4, "tag": "exam", "examInfo": { "subject": "Software Engineering", "start": "12:30pm", "end": "3:00pm" }, "sessions": [{ "subject": "Software Engineering", "task": "Morning: calm final skim only", "mins": 25 }, { "subject": "Done", "task": "Trials complete. Full rest — you’ve earned it.", "mins": 0 }] }];
+
+    const root = document.getElementById('app-root');
+    const timeline = document.getElementById('timeline');
+    const STORAGE_KEY = 'trials-plan-progress-v1';
+    let state = {};
+
+    function todayISO() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+    function daysBetween(a, b) {
+      return Math.round((new Date(b) - new Date(a)) / 86400000);
+    }
+    function fmtDate(iso) {
+      const d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+
+    function renderHero() {
+      const today = todayISO();
+      const hero = document.getElementById('hero');
+      const main = document.getElementById('heroMain');
+      const sub = document.getElementById('heroSub');
+
+      const todaysExam = EXAMS.find(e => e.date === today);
+      if (todaysExam) {
+        hero.className = 'hero exam-today';
+        main.innerHTML = 'Exam today: ' + todaysExam.subject;
+        sub.textContent = todaysExam.start + ' \u2013 ' + todaysExam.end + '. You\u2019ve got this.';
+        return;
+      }
+      const upcoming = EXAMS.filter(e => daysBetween(today, e.date) > 0).sort((a, b) => a.date.localeCompare(b.date));
+      if (upcoming.length === 0) {
+        if (today > EXAMS[EXAMS.length - 1].date) {
+          hero.className = 'hero done';
+          main.textContent = 'Trials complete \ud83c\udf89';
+          sub.textContent = 'All seven papers sat. Well earned rest.';
+          return;
+        }
+      }
+      const next = upcoming[0];
+      if (next) {
+        const n = daysBetween(today, next.date);
+        hero.className = 'hero';
+        main.innerHTML = '<span class="num">' + n + '</span> day' + (n === 1 ? '' : 's') + ' until ' + next.subject;
+        sub.textContent = fmtDate(next.date) + ', ' + next.start + ' \u2013 ' + next.end;
+      } else {
+        hero.className = 'hero';
+        main.textContent = 'Trials window: 3\u201318 August';
+        sub.textContent = '';
+      }
+    }
+
+    function sessionId(date, idx) { return date + '::' + idx; }
+
+    function computeProgress() {
+      let total = 0, done = 0;
+      DAYS.forEach(day => {
+        day.sessions.forEach((s, idx) => {
+          if (s.mins > 0) {
+            total++;
+            if (state[sessionId(day.date, idx)]) done++;
+          }
+        });
+      });
+      return { total, done };
+    }
+
+    function renderProgress() {
+      const { total, done } = computeProgress();
+      document.getElementById('progressLabel').textContent = done + ' / ' + total + ' sessions';
+      document.getElementById('barFill').style.width = (total ? (done / total * 100) : 0) + '%';
+    }
+
+    function dayIsComplete(day) {
+      const checkable = day.sessions.filter(s => s.mins > 0);
+      if (checkable.length === 0) return false;
+      return checkable.every((s, i) => {
+        const realIdx = day.sessions.indexOf(s);
+        return state[sessionId(day.date, realIdx)];
+      });
+    }
+
+    function renderTimeline() {
+      const today = todayISO();
+      let html = '';
+      let lastPhase = -1;
+      DAYS.forEach(day => {
+        if (day.phase !== lastPhase) {
+          const p = PHASES[day.phase];
+          html += '<div class="phase-header"><div class="phase-name">' + (day.phase + 1) + '. ' + p.name + '</div>' +
+            '<div class="phase-range mono">' + p.range + '</div>' +
+            '<div class="phase-goal">' + p.goal + '</div></div>';
+          lastPhase = day.phase;
+        }
+        const isToday = day.date === today;
+        const isExam = day.tag === 'exam';
+        const complete = dayIsComplete(day);
+        let nodeClass = 'node';
+        if (isExam) nodeClass += ' exam-node';
+        else if (complete) nodeClass += ' complete';
+        if (isToday) nodeClass += ' today-node';
+
+        let cardClass = 'day-card';
+        if (day.tag === 'light') cardClass += ' light-day';
+        if (isExam) cardClass += ' exam-day';
+        if (isToday) cardClass += ' is-today';
+
+        html += '<div class="day-row">' +
+          '<div class="spine-col"><div class="' + nodeClass + '"></div><div class="spine-line"></div></div>' +
+          '<div class="' + cardClass + '">' +
+          '<div class="day-head"><span class="day-date">' + day.dayLabel + '</span>' +
+          (day.tag ? '<span class="day-tag' + (isExam ? ' exam-tag' : '') + '">' + (isExam ? 'Exam day' : day.tag === 'light' ? 'Light day' : 'Gap day') + '</span>' : '') +
+          '</div>' +
+          (isExam ? '<div class="exam-banner">' + day.examInfo.subject + ' \u2014 <span class="mono">' + day.examInfo.start + '\u2013' + day.examInfo.end + '</span></div>' : '') +
+          day.sessions.map((s, idx) => {
+            const id = sessionId(day.date, idx);
+            const checked = !!state[id];
+            if (s.mins === 0) {
+              return '<div class="session no-check"><div class="session-body"><span class="session-subject">' + s.subject + '.</span> ' + s.task + '</div></div>';
+            }
+            return '<div class="session' + (checked ? ' checked' : '') + '" data-id="' + id + '">' +
+              '<input type="checkbox" ' + (checked ? 'checked' : '') + ' data-id="' + id + '" aria-label="' + s.subject + ': ' + s.task + '">' +
+              '<div class="session-body"><span class="session-subject">' + s.subject + '</span><br>' +
+              '<span class="session-task">' + s.task + '</span></div>' +
+              '<span class="session-mins">' + s.mins + 'm</span>' +
+              '</div>';
+          }).join('') +
+          '</div>' +
+          '</div>';
+      });
+      timeline.innerHTML = html;
+
+      timeline.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', async (e) => {
+          const id = e.target.getAttribute('data-id');
+          state[id] = e.target.checked;
+          renderProgress();
+          renderTimeline();
+          await saveState();
+        });
+      });
+    }
+
+    async function loadState() {
+      try {
+        const res = await window.storage.get(STORAGE_KEY, false);
+        if (res && res.value) state = JSON.parse(res.value);
+      } catch (err) {
+        state = {};
+      }
+    }
+    async function saveState() {
+      try {
+        await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+      } catch (err) {
+        console.error('Could not save progress', err);
+      }
+    }
+
+    document.getElementById('resetBtn').addEventListener('click', async () => {
+      if (!confirm('Clear all ticked sessions?')) return;
+      state = {};
+      await saveState();
+      renderProgress();
+      renderTimeline();
+    });
+
+    (async function init() {
+      await loadState();
+      renderHero();
+      renderProgress();
+      renderTimeline();
+      const todayCard = timeline.querySelector('.is-today');
+      if (todayCard) todayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })();
+  })();
+</script>
